@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import plus_icon from "../assets/images/plus_icon.png";
 import Drawer from "react-modern-drawer";
 import Chat_icon from "../assets/images/Chat_icon.png";
 import close from "../assets/images/close.png";
-import updates_icon from "../assets/images/updates_icon.png";
 import logout_icon from "../assets/images/logout_icon.png";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import catchAsync from "../utiles/catchAsync";
@@ -21,11 +20,11 @@ import "./sideBar.css";
 const Sidebar = () => {
   const { list, setListItems, openSideBar, setOpenSideBar } =
     useContext(ListContext);
-  const { height, width } = useWindowDimensions();
+  const {  width } = useWindowDimensions();
   const navigate = useNavigate();
 
-  const { isLogin, signOut } = useContext(AuthContext);
-  const [isOpen, setIsOpen] = React.useState(true);
+  const {  , signOut } = useContext(AuthContext);
+  const [ , setIsOpen] = React.useState(true);
   const [updateConversion, setupdateConversion] = useState(null);
 
   const [param, setParams] = React.useState(null);

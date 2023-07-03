@@ -26,6 +26,8 @@ import UploadModal from "../../modals/UploadFileModal/UploadModal.js";
 import UploadTextModal from "../../modals/UploadTextModal/UploadTextModal";
 import useWindowDimensions from "../../utiles/getWindowDimensions";
 import "./Home.css";
+import PricingModal from "../../components/PricingModal";
+import { plan1, plan2, plan3 } from "../../service/plan";
 
 const Home = () => {
   const { list, setListItems, openSideBar, setOpenSideBar } =
@@ -434,161 +436,165 @@ const Home = () => {
                       onClick={() => setOpenSideBar(!openSideBar)}
                     />
                   ) : null}
-                  <Tabs
-                    defaultActiveKey="conversion"
-                    id="uncontrolled-tab-example"
-                  >
-                    <Tab
-                      eventKey="conversion"
-                      title="Conversion"
-                      className="conversion"
+                  <div>
+                    <Tabs
+                      defaultActiveKey="conversion"
+                      id="uncontrolled-tab-example"
                     >
-                      {step === "step1" && list ? (
-                        <div className="Home_content_main">
-                          <div className="home_content">
-                            <h3 className="home_content_heading">Step 1</h3>
-                            <p className="upload_title">
-                              Upload an CSV file in a format you want to to
-                              collect with several samples of data
-                            </p>
+                      <Tab
+                        eventKey="conversion"
+                        title="Conversion"
+                        className="conversion"
+                      >
+                        {step === "step1" && list ? (
+                          <div className="Home_content_main">
+                            <div className="home_content">
+                              <h3 className="home_content_heading">Step 1</h3>
+                              <p className="upload_title">
+                                Upload an CSV file in a format you want to to
+                                collect with several samples of data
+                              </p>
 
-                            <div
-                              className={`upload_csv_file_main ${
-                                maxSizeErr && "maxSizeError"
-                              }`}
-                            >
-                              <Form.Control
-                                className="rounded-0 uploadField "
-                                type="file"
-                                name="image"
-                                id="upload_csv"
-                                onChange={(e) => handleChangeCsv(e)}
-                                multiple={false}
-                                accept=".csv"
-                              />
-                              <div className={`${width > 912 ? "d-flex" : ""}`}>
-                                <label
-                                  for="upload_csv"
-                                  className="upload_csv_btn m-1 "
-                                >
-                                  Upload CSV file
-                                </label>
-
-                                <Button
-                                  variant="dark"
-                                  style={{
-                                    width: "263px",
-                                    height: "48px",
-                                    borderRadius: "10px",
-                                    fontWeight: "600",
-                                    fontSize: "12px",
-                                  }}
-                                  className="m-1 "
-                                  onClick={handlePaste}
-                                >
-                                  {loading === "4" ? (
-                                    <Spinner
-                                      animation="border"
-                                      variant="secondary"
-                                    />
-                                  ) : (
-                                    "From clipboard"
-                                  )}
-                                </Button>
-                              </div>
-                              <p
-                                className={`upload_error ${
-                                  maxSizeErr && "labelError"
+                              <div
+                                className={`upload_csv_file_main ${
+                                  maxSizeErr && "maxSizeError"
                                 }`}
                               >
-                                Max file size - 5 mb.
-                              </p>
+                                <Form.Control
+                                  className="rounded-0 uploadField "
+                                  type="file"
+                                  name="image"
+                                  id="upload_csv"
+                                  onChange={(e) => handleChangeCsv(e)}
+                                  multiple={false}
+                                  accept=".csv"
+                                />
+                                <div
+                                  className={`${width > 912 ? "d-flex" : ""}`}
+                                >
+                                  <label
+                                    for="upload_csv"
+                                    className="upload_csv_btn m-1 "
+                                  >
+                                    Upload CSV file
+                                  </label>
+
+                                  <Button
+                                    variant="dark"
+                                    style={{
+                                      width: "263px",
+                                      height: "48px",
+                                      borderRadius: "10px",
+                                      fontWeight: "600",
+                                      fontSize: "12px",
+                                    }}
+                                    className="m-1 "
+                                    onClick={handlePaste}
+                                  >
+                                    {loading === "4" ? (
+                                      <Spinner
+                                        animation="border"
+                                        variant="secondary"
+                                      />
+                                    ) : (
+                                      "From clipboard"
+                                    )}
+                                  </Button>
+                                </div>
+                                <p
+                                  className={`upload_error ${
+                                    maxSizeErr && "labelError"
+                                  }`}
+                                >
+                                  Max file size - 5 mb.
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ) : step === "step2" && list ? (
-                        <div className="Home_content_main">
-                          <div className="home_content">
-                            <h3 className="home_content_heading">Step 2</h3>
-                            <p className="upload_title">
-                              Upload a file in any format you want to transform
-                            </p>
-                            <div className="template_upload_file_main">
-                              <div className="template_csv_main">
-                                <div className="template_csv">
-                                  <div className="template_csv_heading_main">
-                                    <div className="csvHeader">
-                                      <img src={file_image} />
-                                      <span className="template_heading">
-                                        {file?.name}
-                                      </span>
-                                      {/* <div>
+                        ) : step === "step2" && list ? (
+                          <div className="Home_content_main">
+                            <div className="home_content">
+                              <h3 className="home_content_heading">Step 2</h3>
+                              <p className="upload_title">
+                                Upload a file in any format you want to
+                                transform
+                              </p>
+                              <div className="template_upload_file_main">
+                                <div className="template_csv_main">
+                                  <div className="template_csv">
+                                    <div className="template_csv_heading_main">
+                                      <div className="csvHeader">
+                                        <img src={file_image} alt="img" />
+                                        <span className="template_heading">
+                                          {file?.name}
+                                        </span>
+                                        {/* <div>
                      <span className="file_size">
                        {(file?.size / 1024 / 1024).toFixed(2)}
                      </span>
                    </div> */}
-                                    </div>
+                                      </div>
 
-                                    <div className="downloading_img_main">
-                                      <Button
-                                        variant="secondary"
-                                        className="downloading_img"
-                                        onClick={handleShow}
-                                      >
-                                        Reload CSV
-                                      </Button>
+                                      <div className="downloading_img_main">
+                                        <Button
+                                          variant="secondary"
+                                          className="downloading_img"
+                                          onClick={handleShow}
+                                        >
+                                          Reload CSV
+                                        </Button>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="template_csv_main">
-                                <div className="template_csv">
-                                  <div className="template_csv_heading_main">
-                                    <OverlayTrigger
-                                      overlay={
-                                        convertedFile?.find(
-                                          (el) => el?.list === list
-                                        )?.name?.length > 0 ? (
-                                          <Tooltip id="tooltip-disabled">
-                                            {
-                                              convertedFile?.find(
-                                                (el) => el?.list === list
-                                              )?.name
-                                            }
-                                          </Tooltip>
-                                        ) : (
-                                          <></>
-                                        )
-                                      }
-                                    >
-                                      <span className="file_size">
-                                        {convertedFile?.find(
-                                          (el) => el?.list === list
-                                        )
-                                          ? convertedFile?.find(
-                                              (el) => el?.list === list
-                                            )?.name?.length > 18
-                                            ? `${convertedFile
-                                                ?.find(
+                                <div className="template_csv_main">
+                                  <div className="template_csv">
+                                    <div className="template_csv_heading_main">
+                                      <OverlayTrigger
+                                        overlay={
+                                          convertedFile?.find(
+                                            (el) => el?.list === list
+                                          )?.name?.length > 0 ? (
+                                            <Tooltip id="tooltip-disabled">
+                                              {
+                                                convertedFile?.find(
                                                   (el) => el?.list === list
-                                                )
-                                                ?.name?.slice(0, 18)}...`
-                                            : convertedFile?.find(
+                                                )?.name
+                                              }
+                                            </Tooltip>
+                                          ) : (
+                                            <></>
+                                          )
+                                        }
+                                      >
+                                        <span className="file_size">
+                                          {convertedFile?.find(
+                                            (el) => el?.list === list
+                                          )
+                                            ? convertedFile?.find(
                                                 (el) => el?.list === list
-                                              )?.name
-                                          : " Max file size - 1mb."}
-                                      </span>
-                                    </OverlayTrigger>
+                                              )?.name?.length > 18
+                                              ? `${convertedFile
+                                                  ?.find(
+                                                    (el) => el?.list === list
+                                                  )
+                                                  ?.name?.slice(0, 18)}...`
+                                              : convertedFile?.find(
+                                                  (el) => el?.list === list
+                                                )?.name
+                                            : " Max file size - 1mb."}
+                                        </span>
+                                      </OverlayTrigger>
 
-                                    <label
-                                      className="upload_file_convert_btn"
-                                      onClick={() => {
-                                        setUploadShow(true);
-                                      }}
-                                    >
-                                      Upload from
-                                    </label>
-                                    {/* <Form.Control
+                                      <label
+                                        className="upload_file_convert_btn"
+                                        onClick={() => {
+                                          setUploadShow(true);
+                                        }}
+                                      >
+                                        Upload from
+                                      </label>
+                                      {/* <Form.Control
                                       className="rounded-0 uploadField"
                                       type="file"
                                       name="upload_file"
@@ -613,112 +619,133 @@ const Home = () => {
                                         "Upload file to convert"
                                       )}
                                     </label> */}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="data_template_main">
-                              <div className="mb-2 tableMainInner">
-                                <div className="d-flex">
-                                  <p className="data_template_heading d-flex align-items-center mt-2">
-                                    Data
-                                  </p>
-                                  {sheetDetails === null ? (
-                                    <Button
-                                      variant="secondary"
-                                      className="downloading_img ms-3 btn-light"
-                                      onClick={handleGoogleShow}
-                                    >
-                                      Connect Google Sheets to Export
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      variant="secondary"
-                                      className="downloading_img ms-3 btn-light"
-                                      onClick={unlinkGoogleSheet}
-                                    >
-                                      Disable Google Sheets
-                                    </Button>
-                                  )}
-                                </div>
+                              <div className="data_template_main">
+                                <div className="mb-2 tableMainInner">
+                                  <div className="d-flex">
+                                    <p className="data_template_heading d-flex align-items-center mt-2">
+                                      Data
+                                    </p>
+                                    {sheetDetails === null ? (
+                                      <Button
+                                        variant="secondary"
+                                        className="downloading_img ms-3 btn-light"
+                                        onClick={handleGoogleShow}
+                                      >
+                                        Connect Google Sheets to Export
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        variant="secondary"
+                                        className="downloading_img ms-3 btn-light"
+                                        onClick={unlinkGoogleSheet}
+                                      >
+                                        Disable Google Sheets
+                                      </Button>
+                                    )}
+                                  </div>
 
-                                {data?.convertedData?.length > 0 ? (
-                                  <Button
-                                    className="exportBtn"
-                                    onClick={() => downloadCSV()}
-                                  >
-                                    Export
-                                  </Button>
-                                ) : null}
-                              </div>
-                              <div className="tableData">
-                                <Table>
-                                  <thead className="table_heading">
-                                    <tr>
-                                      {tableHeaders?.map((el) => {
-                                        return <th>{el}</th>;
+                                  {data?.convertedData?.length > 0 ? (
+                                    <Button
+                                      className="exportBtn"
+                                      onClick={() => downloadCSV()}
+                                    >
+                                      Export
+                                    </Button>
+                                  ) : null}
+                                </div>
+                                <div className="tableData">
+                                  <Table>
+                                    <thead className="table_heading">
+                                      <tr>
+                                        {tableHeaders?.map((el) => {
+                                          return <th>{el}</th>;
+                                        })}
+                                        <th></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody className="table_body">
+                                      {tableData?.map((el, index) => {
+                                        return (
+                                          <tr>
+                                            {el?.map((value) => {
+                                              return <td>{value}</td>;
+                                            })}
+                                            <td>
+                                              <img
+                                                src={deleteImg}
+                                                onClick={() =>
+                                                  handleDeleteRow(
+                                                    el,
+                                                    index,
+                                                    "csv"
+                                                  )
+                                                }
+                                                alt="delete"
+                                                className="delImg"
+                                              />
+                                            </td>
+                                          </tr>
+                                        );
                                       })}
-                                      <th></th>
-                                    </tr>
-                                  </thead>
-                                  <tbody className="table_body">
-                                    {tableData?.map((el, index) => {
-                                      return (
-                                        <tr>
-                                          {el?.map((value) => {
-                                            return <td>{value}</td>;
-                                          })}
-                                          <td>
-                                            <img
-                                              src={deleteImg}
-                                              onClick={() =>
-                                                handleDeleteRow(
-                                                  el,
-                                                  index,
-                                                  "csv"
-                                                )
-                                              }
-                                              alt="delete"
-                                              className="delImg"
-                                            />
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                    {data?.convertedData?.map((el, index) => {
-                                      return (
-                                        <tr style={{ color: "#44444F" }}>
-                                          {Object.keys(el).map(function (
-                                            detail,
-                                            id
-                                          ) {
-                                            return <td>{el[detail]}</td>;
-                                          })}
-                                          <td>
-                                            <img
-                                              src={deleteImg}
-                                              onClick={() =>
-                                                handleDeleteRow(el, index)
-                                              }
-                                              alt="delete"
-                                              className="delImg"
-                                            />
-                                          </td>
-                                        </tr>
-                                      );
-                                    })}
-                                  </tbody>
-                                </Table>
+                                      {data?.convertedData?.map((el, index) => {
+                                        return (
+                                          <tr style={{ color: "#44444F" }}>
+                                            {Object.keys(el).map(function (
+                                              detail,
+                                              id
+                                            ) {
+                                              return <td>{el[detail]}</td>;
+                                            })}
+                                            <td>
+                                              <img
+                                                src={deleteImg}
+                                                onClick={() =>
+                                                  handleDeleteRow(el, index)
+                                                }
+                                                alt="delete"
+                                                className="delImg"
+                                              />
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
+                                    </tbody>
+                                  </Table>
+                                </div>
                               </div>
                             </div>
                           </div>
+                        ) : null}
+                      </Tab>
+                      <Tab
+                        eventKey="pricing"
+                        title="Pricing"
+                        className="conversion"
+                      >
+                        <div className="prcing">
+                          <div className="Pricing_modal">
+                            <div className="plan"> Your plan </div>
+                            <div className="  call_component" >
+                              <PricingModal  plan={plan1}/>
+                              <PricingModal plan={plan2} />
+                              <PricingModal  plan={plan3} />
+                            </div>
+                            <div className="contact_info" >
+                              <div className="contact" >Contact Us for Special Offers:</div>
+                              <div className="contact_ref" > contacts@datatera.io </div>
+                            </div>
+                          </div>
                         </div>
-                      ) : null}
-                    </Tab>
-                    {/* <Tab eventKey="history" title="History">
+                      </Tab>
+                      {/* <Tab eventKey="history" title="History">
    There will be the History!
  </Tab> */}
-                  </Tabs>
+                    </Tabs>
+                  </div>
                 </div>
               </div>
               {/* reload modal  */}
