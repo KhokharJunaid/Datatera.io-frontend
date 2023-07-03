@@ -1,0 +1,7 @@
+.select-input {
+  width: 405px;
+  height: 48px;
+  box-sizing: border-box;
+  border: 1px solid #e2e2ea;
+  border-radius: 10px;
+}

@@ -1,0 +1,12 @@
+.sidebarMain{
+    background-color : #1C1C24 !important;
+     color: white !important 
+}
+.conversionTitle{
+   color: #4AA181;
+}
+.submitBtn{
+    background-color: #4aa181 !important;
+    color: white !important;
+    border: none !important;
+}

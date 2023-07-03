@@ -1,0 +1,26 @@
+name: frontend cicd
+run-name: Run#${{ github.run_number }}, Event:${{ github.event_name }}, by @${{ github.actor }}
+concurrency:
+  group: front
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  trigger-test-deployment:
+    runs-on: ubuntu-latest
+    env:
+      GHCR_TOKEN : ${{ secrets.GHCR_TOKEN }}
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ env.GHCR_TOKEN }}
+          repository: ${{ github.repository_owner }}/deploy
+          event-type: deploy

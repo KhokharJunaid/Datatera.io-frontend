@@ -1,0 +1,264 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+.signin_main{
+    height: 100vh;
+    justify-content: center;
+}
+.signinUpper{
+    height: 100%;
+    display: flex;
+}
+.signin{
+
+    width: 29%;
+    margin: auto;
+}
+
+.login_heading{
+font-weight: 700;
+font-size: 40px;
+color: #4AA181;
+text-align: center;
+
+}
+
+.explore_future_heading{
+    font-weight: 400;
+    font-size: 24px;
+    color: #92929D;
+text-align: center;
+}
+
+
+.register_btn{
+    font-weight: 600!important;
+font-size: 12px!important;
+color: #44444F!important;
+border-radius: 10px !important;
+    background-color:#F1F1F5 !important;
+border-color:#F1F1F5 !important; ;
+    width: 6rem !important;
+    margin-right: 26px !important;
+    height: 48px !important; 
+}
+.signin_login_btn{
+ background-color: #4AA181 !important;
+ border-color: #4AA181 !important;
+ width: 100% !important;
+ border-radius: 10px !important;
+ height: 48px !important; 
+ font-weight: 600!important;
+ font-size: 12px!important;
+}
+.signin_button_main{
+    display: flex;
+}
+
+.signin_with_email{
+    color: #92929D;
+    font-size: 12px;
+    margin-top: 2rem;
+    margin-bottom: 2rem !important;
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 1px  solid rgba(68, 68, 79, 0.1); 
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+    font-weight: 400;
+}
+.signin_email_span{
+    margin-left: 10px;
+    margin-right: 10px;
+    background:#fff !important; 
+    padding:0 10px !important; 
+}
+.googlelogo{
+    width: 1.5rem;
+    margin-right: 8px;
+}
+.signin_div{
+    background-color:#F1F1F5;
+    border-radius: 10px;;
+    display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+height: 45px;
+padding-top: 1rem;
+padding-bottom: 1rem;
+cursor: pointer;
+}
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+height: 48px !important;
+}
+.signin_div_main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.logo{
+    margin-top: 1rem;
+    margin-left: 3rem;
+    width: 46px;
+    height: 62.78px;
+}
+.eye_icon_main{
+    display: flex;
+    position: relative;
+}
+.eye_icon{
+    position: absolute;
+    right: 5%;
+    top: 34.5%;
+    
+}
+.form-control.is-valid, .was-validated .form-control:valid{
+    background-image: none !important;
+}
+.form-control.is-invalid{
+    background-image: none !important;
+}
+.forgot_password_link{
+    text-decoration: none;
+    color: #92929D;
+    display: block;
+    text-align: end;
+    font-weight: 400;
+    font-size: 12px;    
+}
+.forgot_password_div{
+    margin-bottom: 1rem;
+    margin-top: 0.7rem;
+}
+
+
+@media screen and (max-width: 280px) {
+    .logo{
+        width: 46px;
+    height: 62.78px;
+        display: block;
+        margin: auto;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    } 
+    .signin{
+        width: 85%;
+        margin: auto;
+    }  
+    
+    
+    .explore_future_heading{
+        font-weight: 400;
+        font-size: 20px;
+        color: #92929D;
+    text-align: center;
+    }   
+    
+    .register_btn{
+        font-weight: 600!important;
+    font-size: 12px!important;
+    color: #44444F!important;
+    border-radius: 10px !important;
+        background-color:#F1F1F5 !important;
+        width: 100% !important;
+        margin-bottom: 1rem !important;
+        height: 48px !important; 
+
+    }
+    .signin_login_btn{
+     background-color: #4AA181 !important;
+     border-color: #4AA181 !important;
+     width: 100% !important;
+     border-radius: 10px !important;
+     height: 48px !important; 
+    
+    }
+    .signin_button_main{
+       display: block !important;
+    }
+
+
+}
+
+
+@media screen and  (min-width:281px) and  (max-width: 425px) {
+    .logo{
+        width: 46px;
+    height: 62.78px;
+        display: block;
+        margin: auto;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    } 
+    .signin{
+        width: 85%;
+        margin: auto;
+    }  
+    
+    .register_btn{
+        font-weight: 600!important;
+    font-size: 12px!important;
+    color: #44444F!important;
+    border-radius: 10px !important;
+        background-color:#F1F1F5 !important;
+    /* border-color:#F1F1F5 !important; ; */
+        width: 100% !important;
+        margin-bottom: 1rem !important;
+        height: 48px !important; 
+    }
+    .signin_login_btn{
+     background-color: #4AA181 !important;
+     border-color: #4AA181 !important;
+     width: 100% !important;
+     border-radius: 10px !important;
+     height: 48px !important; 
+    
+    }
+    .signin_button_main{
+       display: block !important;
+    }
+
+}
+
+
+@media screen and   (min-width:426px) and  (max-width: 768px) {
+    .signin{
+        width: 40%;
+        margin: auto;
+    }  
+    
+}
+
+@media screen and   (min-width:769px) and  (max-width: 1000px) {
+    .signin{
+        width: 34%;
+        margin: auto;
+    }  
+    
+}
+
+@media(max-width: 425px)  {
+    .signin_div_main{
+       display: block !important;
+    } 
+    .register_btn {
+        margin-right: 0px !important;
+    height: 48px !important; 
+
+    }
+    .Login_btn {
+        margin-right: 0px !important;
+    } 
+}
+
+@media(max-width: 425px)  {
+    .signin_login_btn{
+        margin-bottom: 2rem;
+    }
+}
