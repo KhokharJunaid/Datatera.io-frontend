@@ -1,0 +1,66 @@
+.your_plan{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 300px;
+  padding: 10px;
+  border:1px solid #D9D9E3;
+
+}
+.title{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 20px;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.p_color{
+  color:  #4AA181;
+}
+.modal_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+ 
+  
+}
+.btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 48px;
+    background-color: #4AA181 !important;
+    height: object-fit;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: white !important;
+}
+
+.freebtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 48px;
+    background-color: #c5c5d2a3 !important;
+    height: object-fit;
+    margin-bottom: 30px;
+font-weight: 600;
+    border-radius: 10px;
+    color: #3a3b3e !important;
+}
+
+
+.description{
+    display: flex;
+    gap:10px;
+    margin-top:5px;
+    margin-left:10px
+}
