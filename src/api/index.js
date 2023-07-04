@@ -5,8 +5,7 @@ const getToken = () => {
   return token;
 };
 const api = axios.create({
-  // baseURL: process.env.REACT_APP_BASE_URL,
-  baseURL: "http://localhost:5000/v1",
+  baseURL: process.env.REACT_APP_BASE_URL,
   // baseURL: "https://datatera.herokuapp.com/api/v1",
   // baseURL: "http://127.0.0.1:5000/api/v1",
   // baseURL: "http://100.26.50.138:5000/api/v1",
@@ -14,7 +13,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async (config) => {
-    config.headers.authorization = `Bear ${getToken()}`;
+    config.headers.authorization = `Bearer ${getToken()}`;
     return config;
   },
   (error) => {
