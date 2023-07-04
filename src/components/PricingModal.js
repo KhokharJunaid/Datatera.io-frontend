@@ -1,21 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../components/PricingModal.module.css"
 import { Button } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import api from "../api";
 
 
 function PricingModal( {plan}) {
 
-  // const navigate = useNavigate()
-  const nextPage = ( plan ) =>{
-    console.log("plann==>" ,plan)
-    
-    // navigate("/done-subscribe")
+  const navigate = useNavigate()
+  const subscribePlan = async ( plan ) =>{
+     try {
+      const res = await api.post(`/user//subscription?plan=${plan}`); 
+      if(res.data.message){
+        navigate("/done-subscribe")
+      } 
+    } 
+    catch (error) {
+      toast(error?.response?.data?.message, { type: "error" });
+    }
+   
   }
 
-  const handleMailLinkClick = ( plan ) => {
+  const enterpricePlan =  async( plan ) => {
     console.log("plan ====>", plan)
+
+    try {
+      const res = await api.post(`/user//subscription?plan=${plan}`);
+
+      if(res.data.message){
+    const mailtoLink = 'mailto:mi5853361@gmail.com';
+    window.location.href = mailtoLink;
+      }
+      
+      console.log("res=======>", res);
+     
+    } 
+    catch (error) {
+      toast(error?.response?.data?.message, { type: "error" });
+    }
     // event.preventDefault();
     // const mailtoLink = 'mailto:mi5853361@gmail.com';
     // window.location.href = mailtoLink;
@@ -29,7 +52,7 @@ function PricingModal( {plan}) {
         <div className={styles.p_color}>{plan?.price}</div>
       </div>
       <div className={styles.modal_btn}  >
-          <Button variant="secondary" onClick={() => {plan?.btn_title === "Subscribe" ?  nextPage(plan?.title) : handleMailLinkClick(plan?.title)  } } disabled={plan?.title === "Free plan" ?  true : false} className={plan.title === "Free plan"?styles.freebtn:styles.btn}>
+          <Button variant="secondary" onClick={() => {plan?.btn_title === "Subscribe" ?  subscribePlan(plan?.title) : enterpricePlan(plan?.title)  } } disabled={plan?.title === "Free plan"  ?  true : false} className={plan.title === "Free plan"?styles.freebtn:styles.btn}>
             {plan?.btn_title}
           </Button>
         </div>
