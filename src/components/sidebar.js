@@ -20,11 +20,11 @@ import "./sideBar.css";
 const Sidebar = () => {
   const { list, setListItems, openSideBar, setOpenSideBar } =
     useContext(ListContext);
-  const {  width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const navigate = useNavigate();
 
-  const {  signOut } = useContext(AuthContext);
-  const [  setIsOpen] = React.useState(true);
+  const { isLogin, signOut } = useContext(AuthContext);
+  const [isOpen, setIsOpen] = React.useState(true);
   const [updateConversion, setupdateConversion] = useState(null);
 
   const [param, setParams] = React.useState(null);
