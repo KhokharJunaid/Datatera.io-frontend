@@ -15,6 +15,7 @@ const ResetPassword = () => {
 
   const [showpassword, setShowpassword] = useState(false);
   const [showconfirmPassword, setShowconfirmPassword] = useState(false);
+  const [isloading  , setIsLoading] = useState(false)
 
   const urlSearchParams = new URLSearchParams(window.location.search);
   const token = urlSearchParams.get("token");
@@ -42,7 +43,7 @@ const ResetPassword = () => {
   });
 
   const onSubmit = async (values, resetForm) => {
-    console.log("values", values);
+    setIsLoading(true)
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/user/reset-password`,
@@ -53,9 +54,14 @@ const ResetPassword = () => {
           },
         }
       );
+
+      if(res.data.message){
+        navigate("/");
+        resetForm();
+
+      }
       console.log("res=======>", res);
-      navigate("/");
-      resetForm();
+     
     } catch (error) {
       toast(error?.response?.data?.message, { type: "error" });
     }
@@ -147,7 +153,7 @@ const ResetPassword = () => {
                 />
               )}
             </div>
-            <Button type="submit" className={styles.signin_login_btn}>
+            <Button type="submit" disabled={isloading} className={styles.signin_login_btn}>
               Reset Password
             </Button>
           </Box>
