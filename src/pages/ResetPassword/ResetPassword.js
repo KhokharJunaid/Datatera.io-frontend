@@ -1,35 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, TextField } from "@mui/material";
 import styles from "../ResetPassword/ResetPassword.module.css";
 import * as yup from "yup";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import logo from "../../assets/images/logo.jpg";
 import { useFormik } from "formik";
-import api from "../../api";
-
+import axios from "axios";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
- 
+
   const [showpassword, setShowpassword] = useState(false);
   const [showconfirmPassword, setShowconfirmPassword] = useState(false);
-  
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const token = urlSearchParams.get('token');
-  console.log("url in the ",token)
 
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const token = urlSearchParams.get("token");
+  console.log("url in the ", token);
 
   //  useEffect(() => {
   //     const urlSearchParams = new URLSearchParams(window.location.search);
   //   const token = urlSearchParams.get('token');
   //   console.log("url in the ",token);
   // }, []);
-  
-
-
 
   const initialValues = {
     confirmPassword: "",
@@ -47,15 +42,18 @@ const ResetPassword = () => {
   });
 
   const onSubmit = async (values, resetForm) => {
-    console.log("values" , values)
+    console.log("values", values);
     try {
-      const res = await api.post("/user/reset-password", values , {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      } )
-      console.log("res=======>" ,res)
-    
+      const res = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/user/reset-password`,
+        values,
+        {
+          headers: {
+            token,
+          },
+        }
+      );
+      console.log("res=======>", res);
       navigate("/");
       resetForm();
     } catch (error) {
