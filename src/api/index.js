@@ -5,7 +5,8 @@ const getToken = () => {
   return token;
 };
 const api = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  // baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: "http://localhost:5000/v1",
   // baseURL: "https://datatera.herokuapp.com/api/v1",
   // baseURL: "http://127.0.0.1:5000/api/v1",
   // baseURL: "http://100.26.50.138:5000/api/v1",

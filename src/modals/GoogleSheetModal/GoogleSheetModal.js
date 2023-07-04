@@ -106,7 +106,7 @@ const GoogleSheetModal = (props) => {
         let i = 0;
         setSheetLength(data?.sheets?.length);
         data?.sheets?.length > 0 &&
-          data?.sheets.forEach((s, index) => {
+          data?.sheets?.forEach((s, index) => {
             const sheetName = s.properties.title;
             const API = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values:batchGet?ranges=${sheetName}&majorDimension=COLUMNS&key=${key}`;
             fetch(API)
@@ -139,7 +139,7 @@ const GoogleSheetModal = (props) => {
   useEffect(() => {
     if (documents?.length > 0) {
       let list = [];
-      documents.forEach((val) => {
+      documents?.forEach((val) => {
         const body = {
           name: val.name,
           id: val.id,

@@ -7,6 +7,7 @@ import EnterEmail from "../pages/EnterEmail/EnterEmail";
 import EmailSend from "../pages/EmailSend/EmailSend";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import { ProtectedAuthRoute, ProtectedRoute } from "./protectedRoutes";
+import DoneSubscribe from "../pages/DoneSubcribe/DoneSubscribe";
 
 const AppRoutes = () => {
   return (
@@ -57,6 +58,15 @@ const AppRoutes = () => {
         }
       />
       <Route
+        exact
+        path="/done-subscribe"
+        element={
+          <ProtectedAuthRoute>
+            <DoneSubscribe/>
+          </ProtectedAuthRoute>
+        }
+      />
+       <Route
         exact
         path="/"
         element={
