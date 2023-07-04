@@ -52,6 +52,11 @@ const Home = () => {
   const [updateSheetLoading, setUpdateSheetLoading] = useState(false);
   const [textCheckBox, setTextCheckBox] = useState(false);
 
+  const [search, totalSearches] = useState({
+    remainingUploads: null,
+    totalUploads: null,
+  });
+
   const [loadingData, setLoadingData] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -90,6 +95,7 @@ const Home = () => {
         try {
           api.post("/conversion/addData", values).then((res) => {
             getConversionData(true);
+            handleTotalUploads();
           });
         } catch (error) {
           console.log(error);
@@ -398,14 +404,22 @@ const Home = () => {
         console.log("Failed to read clipboard data:", error);
       });
   };
-  
-  const handleMailLinkClick = ( event ) => {
+
+  const handleMailLinkClick = (event) => {
     // event.preventDefault();
-    const mailtoLink = 'mailto:mi5853361@gmail.com';
+    const mailtoLink = "mailto:mi5853361@gmail.com";
     window.location.href = mailtoLink;
-    
   };
-   
+
+  const handleTotalUploads = async () => {
+    await api.get(`/user/total-uploads`).then((res) => {
+      totalSearches(res?.data);
+    });
+  };
+
+  useEffect(() => {
+    handleTotalUploads();
+  }, []);
 
   return (
     <>
@@ -454,71 +468,84 @@ const Home = () => {
                         title="Conversion"
                         className="conversion"
                       >
+                        <div
+                          style={{
+                            fontSize: "18px",
+                            marginTop: "10px",
+                            marginLeft: "15px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Remaining uploads: {search?.remainingUploads}/
+                          {search?.totalUploads}
+                        </div>
                         {step === "step1" && list ? (
-                          <div className="Home_content_main">
-                            <div className="home_content">
-                              <h3 className="home_content_heading">Step 1</h3>
-                              <p className="upload_title">
-                                Upload an CSV file in a format you want to to
-                                collect with several samples of data
-                              </p>
+                          <>
+                            <div className="Home_content_main">
+                              <div className="home_content">
+                                <h3 className="home_content_heading">Step 1</h3>
+                                <p className="upload_title">
+                                  Upload an CSV file in a format you want to to
+                                  collect with several samples of data
+                                </p>
 
-                              <div
-                                className={`upload_csv_file_main ${
-                                  maxSizeErr && "maxSizeError"
-                                }`}
-                              >
-                                <Form.Control
-                                  className="rounded-0 uploadField "
-                                  type="file"
-                                  name="image"
-                                  id="upload_csv"
-                                  onChange={(e) => handleChangeCsv(e)}
-                                  multiple={false}
-                                  accept=".csv"
-                                />
                                 <div
-                                  className={`${width > 912 ? "d-flex" : ""}`}
-                                >
-                                  <label
-                                    for="upload_csv"
-                                    className="upload_csv_btn m-1 "
-                                  >
-                                    Upload CSV file
-                                  </label>
-
-                                  <Button
-                                    variant="dark"
-                                    style={{
-                                      width: "263px",
-                                      height: "48px",
-                                      borderRadius: "10px",
-                                      fontWeight: "600",
-                                      fontSize: "12px",
-                                    }}
-                                    className="m-1 "
-                                    onClick={handlePaste}
-                                  >
-                                    {loading === "4" ? (
-                                      <Spinner
-                                        animation="border"
-                                        variant="secondary"
-                                      />
-                                    ) : (
-                                      "From clipboard"
-                                    )}
-                                  </Button>
-                                </div>
-                                <p
-                                  className={`upload_error ${
-                                    maxSizeErr && "labelError"
+                                  className={`upload_csv_file_main ${
+                                    maxSizeErr && "maxSizeError"
                                   }`}
                                 >
-                                  Max file size - 5 mb.
-                                </p>
+                                  <Form.Control
+                                    className="rounded-0 uploadField "
+                                    type="file"
+                                    name="image"
+                                    id="upload_csv"
+                                    onChange={(e) => handleChangeCsv(e)}
+                                    multiple={false}
+                                    accept=".csv"
+                                  />
+                                  <div
+                                    className={`${width > 912 ? "d-flex" : ""}`}
+                                  >
+                                    <label
+                                      for="upload_csv"
+                                      className="upload_csv_btn m-1 "
+                                    >
+                                      Upload CSV file
+                                    </label>
+
+                                    <Button
+                                      variant="dark"
+                                      style={{
+                                        width: "263px",
+                                        height: "48px",
+                                        borderRadius: "10px",
+                                        fontWeight: "600",
+                                        fontSize: "12px",
+                                      }}
+                                      className="m-1 "
+                                      onClick={handlePaste}
+                                    >
+                                      {loading === "4" ? (
+                                        <Spinner
+                                          animation="border"
+                                          variant="secondary"
+                                        />
+                                      ) : (
+                                        "From clipboard"
+                                      )}
+                                    </Button>
+                                  </div>
+                                  <p
+                                    className={`upload_error ${
+                                      maxSizeErr && "labelError"
+                                    }`}
+                                  >
+                                    Max file size - 5 mb.
+                                  </p>
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          </>
                         ) : step === "step2" && list ? (
                           <div className="Home_content_main">
                             <div className="home_content">
@@ -737,14 +764,22 @@ const Home = () => {
                         <div className="prcing">
                           <div className="Pricing_modal">
                             <div className="plan"> Your plan </div>
-                            <div className="  call_component" >
-                              <PricingModal  plan={plan1}/>
+                            <div className="  call_component">
+                              <PricingModal plan={plan1} />
                               <PricingModal plan={plan2} />
-                              <PricingModal  plan={plan3} />
+                              <PricingModal plan={plan3} />
                             </div>
-                            <div className="contact_info" >
-                              <div className="contact" >Contact Us for Special Offers:</div>
-                              <div className="contact_ref"   onClick={() => handleMailLinkClick() }  > contacts@datatera.io </div>
+                            <div className="contact_info">
+                              <div className="contact">
+                                Contact Us for Special Offers:
+                              </div>
+                              <div
+                                className="contact_ref"
+                                onClick={() => handleMailLinkClick()}
+                              >
+                                {" "}
+                                contacts@datatera.io{" "}
+                              </div>
                             </div>
                           </div>
                         </div>
