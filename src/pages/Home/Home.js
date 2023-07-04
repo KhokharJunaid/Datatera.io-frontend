@@ -398,6 +398,14 @@ const Home = () => {
         console.log("Failed to read clipboard data:", error);
       });
   };
+  
+  const handleMailLinkClick = ( event ) => {
+    // event.preventDefault();
+    const mailtoLink = 'mailto:mi5853361@gmail.com';
+    window.location.href = mailtoLink;
+    
+  };
+   
 
   return (
     <>
@@ -736,7 +744,7 @@ const Home = () => {
                             </div>
                             <div className="contact_info" >
                               <div className="contact" >Contact Us for Special Offers:</div>
-                              <div className="contact_ref" > contacts@datatera.io </div>
+                              <div className="contact_ref"   onClick={() => handleMailLinkClick() }  > contacts@datatera.io </div>
                             </div>
                           </div>
                         </div>

@@ -7,17 +7,18 @@ import { Button } from "react-bootstrap";
 import { signInWithPopup } from "firebase/auth";
 import { toast } from "react-toastify";
 import api from "../../api/index";
-import catchAsync from "../../utiles/catchAsync";
+
 import googleLogo from "../../assets/images/googlelogo.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import logo from "../../assets/images/logo.jpg";
 import { auth, provider } from "../../config/firebaseConfig";
 import { AuthContext } from "../../context/auth";
 import { useFormik } from "formik";
-import Line_Divider from "../../assets/images/line_divider.png";
+
 
 const Signin = () => {
-  const { isLogin, loginSuccess } = useContext(AuthContext);
+  // const { isLogin, loginSuccess } = useContext(AuthContext);
+  const { loginSuccess } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -68,7 +69,7 @@ const Signin = () => {
   return (
     <div className="signin_main">
       <div className="pic_div">
-        <img src={logo} className="logo" />
+        <img src={logo} className="logo" alt="img" />
       </div>
       <div className="signinUpper">
         <div className="signin">
@@ -122,7 +123,7 @@ const Signin = () => {
               )}
             </div>
             <div className="forgot_password_div">
-              <Link className="forgot_password_link">Forgot Password?</Link>
+              <Link to="/enter-email" className="forgot_password_link">Forgot Password?</Link>
             </div>
             <div className="signin_button_main">
               <Link to="/register">
@@ -140,7 +141,7 @@ const Signin = () => {
               <span className="signin_email_span">Or sign in with e-mail</span>
             </p>
             <div className="signin_div" onClick={() => handleOnClick()}>
-              <img src={googleLogo} className="googlelogo" /> Sign in with
+              <img src={googleLogo} className="googlelogo" alt="img"  /> Sign in with
               Google
             </div>
           </div>

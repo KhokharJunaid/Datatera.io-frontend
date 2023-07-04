@@ -23,8 +23,8 @@ const Sidebar = () => {
   const {  width } = useWindowDimensions();
   const navigate = useNavigate();
 
-  const {  , signOut } = useContext(AuthContext);
-  const [ , setIsOpen] = React.useState(true);
+  const {  signOut } = useContext(AuthContext);
+  const [  setIsOpen] = React.useState(true);
   const [updateConversion, setupdateConversion] = useState(null);
 
   const [param, setParams] = React.useState(null);
