@@ -6,8 +6,8 @@ import { toast } from "react-toastify";
 import api from "../api";
 
 function PricingModal({ plan, userPlan }) {
-  // const res = axios.get('http://localhost:5000/v1/user/me')
-  console.log("Plan", plan , "userPlan===>",)
+  
+
 
   const navigate = useNavigate();
   const subscribePlan = async (plan) => {
@@ -30,13 +30,11 @@ function PricingModal({ plan, userPlan }) {
         window.location.href = mailtoLink;
       }
 
-      console.log("res=======>", res);
+
     } catch (error) {
       toast(error?.response?.data?.message, { type: "error" });
     }
-    // event.preventDefault();
-    // const mailtoLink = 'mailto:mi5853361@gmail.com';
-    // window.location.href = mailtoLink;
+   
   };
 
   return (
@@ -48,7 +46,7 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.modal_btn}>
         <Button
           variant="secondary"
-          onClick={plan?.title !== "FREE" && plan?.title !== userPlan[0].name ? () => {
+          onClick={plan?.title !== "FREE" && (userPlan?.length > 0 && plan?.title !== userPlan[0]?.name) ? () => {
             plan?.btn_title === "Subscribe"
               ? subscribePlan(plan?.title)
               : enterpricePlan(plan?.title);
@@ -59,14 +57,14 @@ function PricingModal({ plan, userPlan }) {
               ? ( styles.freebtn )
               : ( plan?.title === "FREE" ?  styles.btn1 : styles.btn )
            })}
-          // className={plan.title === "FREE" ? styles.freebtn : styles.btn}
+        
         >
           {userPlan?.map((currentPlan) => {
             return currentPlan?.name === plan?.title
               ? "Current plan"
               : plan?.btn_title;
           })}
-          {/* {    plan?.btn_title} */}
+   
         </Button>
       </div>
       <div className={styles.description}>
