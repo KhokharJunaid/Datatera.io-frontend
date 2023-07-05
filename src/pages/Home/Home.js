@@ -66,6 +66,7 @@ const Home = () => {
 
   useEffect(() => {
     getConversionData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [list]);
   const readFile = (selectedFile) => {
     const file = selectedFile;
@@ -96,6 +97,7 @@ const Home = () => {
           api.post("/conversion/addData", values).then((res) => {
             getConversionData(true);
             handleTotalUploads();
+            handleValidatePlan();
           });
         } catch (error) {
           console.log(error);
@@ -146,7 +148,7 @@ const Home = () => {
 
   const handleReload = () => {
     try {
-      let res = api.delete(`/conversion/delData/${list}`);
+      api.delete(`/conversion/delData/${list}`);
       setData(null);
       setConvertedfile(convertedFile?.filter((el) => el?.list !== list));
       handleClose();
@@ -419,8 +421,13 @@ const Home = () => {
     });
   };
 
+  const handleValidatePlan = async () => {
+    await api.post("/user/validate-plan");
+  };
+
   useEffect(() => {
     handleTotalUploads();
+    handleValidatePlan();
     getUserPlan();
   }, []);
 
@@ -776,11 +783,13 @@ const Home = () => {
                           <div className="Pricing_modal">
                             <div className="plan"> Your plan </div>
                             <div className="  call_component">
-                              {
-                                plans.map((plan) => (
-                                  <PricingModal key={plan.id} userPlan={userPlan} plan={plan} />
-                                ))
-                              }
+                              {plans.map((plan) => (
+                                <PricingModal
+                                  key={plan.id}
+                                  userPlan={userPlan}
+                                  plan={plan}
+                                />
+                              ))}
                             </div>
                             <div className="contact_info">
                               <div className="contact">
