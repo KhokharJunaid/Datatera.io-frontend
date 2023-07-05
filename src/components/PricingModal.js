@@ -61,7 +61,11 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.description}>
         <div>
           <img
-            src={plan.title === "FREE" ? "/icon_2.png" : "/icon_1.png"}
+            src={userPlan?.map((currentPlan) => {
+              return currentPlan?.name === plan?.title
+                ? "/icon_2.png"
+                : "/icon_1.png";
+            })}
             alt="img"
           />
         </div>
@@ -70,7 +74,11 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.description}>
         <div>
           <img
-            src={plan.title === "FREE" ? "/icon_2.png" : "/icon_1.png"}
+            src={userPlan?.map((currentPlan) => {
+              return currentPlan?.name === plan?.title
+                ? "/icon_2.png"
+                : "/icon_1.png";
+            })}
             alt="img"
           />
         </div>
@@ -79,7 +87,11 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.description}>
         <div>
           <img
-            src={plan.title === "FREE" ? "/icon_2.png" : "/icon_1.png"}
+            src={userPlan?.map((currentPlan) => {
+              return currentPlan?.name === plan?.title
+                ? "/icon_2.png"
+                : "/icon_1.png";
+            })}
             alt="img"
           />
         </div>

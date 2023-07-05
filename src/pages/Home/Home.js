@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -27,11 +28,10 @@ import UploadTextModal from "../../modals/UploadTextModal/UploadTextModal";
 import useWindowDimensions from "../../utiles/getWindowDimensions";
 import "./Home.css";
 import PricingModal from "../../components/PricingModal";
-import { plan1, plan2, plan3, plans } from "../../service/plan";
+import { plans } from "../../service/plan";
 
 const Home = () => {
-  const { list, setListItems, openSideBar, setOpenSideBar } =
-    useContext(ListContext);
+  const { list, openSideBar, setOpenSideBar } = useContext(ListContext);
   const { width } = useWindowDimensions();
   const [step, setStep] = useState("step1");
   const [show, setShow] = useState(false);
@@ -298,6 +298,7 @@ const Home = () => {
           setLoadingData("");
         }
       } catch (error) {
+        toast(error?.response?.data?.message, { type: "error" });
         setLoadingData("");
       }
     }
@@ -416,13 +417,25 @@ const Home = () => {
   };
 
   const handleTotalUploads = async () => {
-    await api.get(`/user/total-uploads`).then((res) => {
-      totalSearches(res?.data);
-    });
+    await api
+      .get(`/user/total-uploads`)
+      .then((res) => {
+        totalSearches(res?.data);
+      })
+      .catch((err) => {
+        toast(err?.response?.data?.message, { type: "error" });
+      });
   };
 
   const handleValidatePlan = async () => {
-    await api.post("/user/validate-plan");
+    await api
+      .post("/user/validate-plan")
+      .then((res) => {
+        console.log("res", res);
+      })
+      .catch((err) => {
+        toast(err?.response?.data?.message, { type: "error" });
+      });
   };
 
   useEffect(() => {
@@ -503,6 +516,17 @@ const Home = () => {
                                     maxSizeErr && "maxSizeError"
                                   }`}
                                 >
+                                  {search?.remainingUploads === 0 && (
+                                    <div
+                                      className={`upload_error ${
+                                        maxSizeErr && "labelError"
+                                      }`}
+                                      style={{ marginBottom: "10px" }}
+                                    >
+                                      Your remaining uploads will be not enough
+                                      to upload file
+                                    </div>
+                                  )}
                                   <Form.Control
                                     className="rounded-0 uploadField "
                                     type="file"
@@ -519,7 +543,7 @@ const Home = () => {
                                       for="upload_csv"
                                       className={
                                         search?.remainingUploads === 0
-                                          ? "upload_csv_btn m-1 disabled "
+                                          ? "upload_csv_btn m-1 disabled"
                                           : "upload_csv_btn m-1"
                                       }
                                     >
