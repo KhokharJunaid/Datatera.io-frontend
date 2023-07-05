@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import api from "../api";
 
 function PricingModal({ plan, userPlan }) {
-
   const navigate = useNavigate();
   const subscribePlan = async (plan) => {
     try {
@@ -19,9 +18,9 @@ function PricingModal({ plan, userPlan }) {
     }
   };
 
-  const enterpricePlan = () => {
-        const mailtoLink = "mailto:info@binarymarvel.com";
-        window.location.href = mailtoLink;
+  const enterpricePlan = async () => {
+    const mailtoLink = "mailto:info@binarymarvels.com";
+    window.location.href = mailtoLink;
   };
 
   return (
@@ -33,36 +32,40 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.modal_btn}>
         <Button
           variant="secondary"
-          onClick={plan?.title !== "FREE" && (userPlan?.length > 0 && plan?.title !== userPlan[0]?.name) ? () => {
-            plan?.btn_title === "Subscribe"
-              ? subscribePlan(plan?.title)
-              : enterpricePlan()
-          } : () => {}}
-     
+          onClick={
+            plan?.title !== "FREE" &&
+            userPlan?.length > 0 &&
+            plan?.title !== userPlan[0]?.name
+              ? () => {
+                  plan?.btn_title === "Subscribe"
+                    ? subscribePlan(plan?.title)
+                    : enterpricePlan();
+                }
+              : () => {}
+          }
           className={userPlan?.map((currentPlan) => {
             return currentPlan?.name === plan?.title
-              ? ( styles.freebtn )
-              : ( plan?.title === "FREE" ?  styles.btn1 : styles.btn )
-           })}
-        
+              ? styles.freebtn
+              : plan?.title === "FREE"
+              ? styles.btn1
+              : styles.btn;
+          })}
         >
           {userPlan?.map((currentPlan) => {
             return currentPlan?.name === plan?.title
               ? "Current plan"
               : plan?.btn_title;
           })}
-   
         </Button>
       </div>
       <div className={styles.description}>
         <div>
           <img
-           src={userPlan?.map((currentPlan) => {
-            return currentPlan?.name === plan?.title
-              ? "/icon_2.png"
-              :  "/icon_1.png"
-          })}
-     
+            src={userPlan?.map((currentPlan) => {
+              return currentPlan?.name === plan?.title
+                ? "/icon_2.png"
+                : "/icon_1.png";
+            })}
             alt="img"
           />
         </div>
@@ -71,11 +74,11 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.description}>
         <div>
           <img
-          src={userPlan?.map((currentPlan) => {
-            return currentPlan?.name === plan?.title
-              ? "/icon_2.png"
-              :  "/icon_1.png"
-          })}
+            src={userPlan?.map((currentPlan) => {
+              return currentPlan?.name === plan?.title
+                ? "/icon_2.png"
+                : "/icon_1.png";
+            })}
             alt="img"
           />
         </div>
@@ -87,7 +90,7 @@ function PricingModal({ plan, userPlan }) {
             src={userPlan?.map((currentPlan) => {
               return currentPlan?.name === plan?.title
                 ? "/icon_2.png"
-                :  "/icon_1.png"
+                : "/icon_1.png";
             })}
             alt="img"
           />

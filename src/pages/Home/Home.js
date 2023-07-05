@@ -490,17 +490,19 @@ const Home = () => {
                         title="Conversion"
                         className="conversion"
                       >
-                        <div
-                          style={{
-                            fontSize: "18px",
-                            marginTop: "10px",
-                            marginLeft: "15px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          Remaining uploads: {search?.remainingUploads}/
-                          {search?.totalUploads}
-                        </div>
+                        {userPlan?.length > 0 && (
+                          <div
+                            style={{
+                              fontSize: "18px",
+                              marginTop: "10px",
+                              marginLeft: "15px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Remaining uploads: {search?.remainingUploads}/
+                            {search?.totalUploads}
+                          </div>
+                        )}
                         {step === "step1" && list ? (
                           <>
                             <div className="Home_content_main">
