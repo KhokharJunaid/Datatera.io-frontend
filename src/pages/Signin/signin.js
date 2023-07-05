@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Box, TextField } from "@mui/material";
+import { Box, CircularProgress, TextField } from "@mui/material";
 import "./signin.css";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +7,6 @@ import { Button } from "react-bootstrap";
 import { signInWithPopup } from "firebase/auth";
 import { toast } from "react-toastify";
 import api from "../../api/index";
-
 import googleLogo from "../../assets/images/googlelogo.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import logo from "../../assets/images/logo.jpg";
@@ -15,10 +14,11 @@ import { auth, provider } from "../../config/firebaseConfig";
 import { AuthContext } from "../../context/auth";
 import { useFormik } from "formik";
 
-
 const Signin = () => {
-  // const { isLogin, loginSuccess } = useContext(AuthContext);
   const { loginSuccess } = useContext(AuthContext);
+
+  const [showpassword, setShowpassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -27,21 +27,21 @@ const Signin = () => {
     password: "",
   };
 
-  const [showpassword, setShowpassword] = useState(false);
-
   const validationSchema = yup.object().shape({
     email: yup.string().email("Invalid email format").required("."),
     password: yup.string().required("."),
   });
+
   const onSubmit = async (values, resetForm) => {
     try {
+      setIsLoading(true);
       const res = await api.post("/user/login", values);
       loginSuccess(res.data.token, res.data.data.user);
       navigate("/");
       resetForm();
+      setIsLoading(false);
     } catch (error) {
       toast(error?.response?.data?.message, { type: "error" });
-      console.log(error);
     }
   };
 
@@ -59,7 +59,6 @@ const Signin = () => {
         navigate("/");
       } catch (error) {
         toast("Some Error while logged in!", { type: "error" });
-        console.log(error);
       }
     });
   };
@@ -75,6 +74,11 @@ const Signin = () => {
         <div className="signin">
           <h6 className="login_heading">Login</h6>
           <p className="explore_future_heading">Explore the future with us</p>
+          {isLoading && (
+            <div className="spinner">
+              <CircularProgress style={{ color: "#4aa181" }} />
+            </div>
+          )}
           <Box
             className="form"
             component="form"
@@ -85,6 +89,7 @@ const Signin = () => {
               type="email"
               label="Email"
               name="email"
+              disabled={isLoading}
               variant="outlined"
               style={{ marginBottom: "1rem", width: "100%" }}
               {...formik.getFieldProps("email")}
@@ -96,6 +101,7 @@ const Signin = () => {
                 type={showpassword ? "text" : "password"}
                 name="password"
                 label="Password"
+                disabled={isLoading}
                 variant="outlined"
                 style={{ width: "100%" }}
                 {...formik.getFieldProps("password")}
@@ -123,16 +129,26 @@ const Signin = () => {
               )}
             </div>
             <div className="forgot_password_div">
-              <Link to="/enter-email" className="forgot_password_link">Forgot Password?</Link>
+              <Link to="/enter-email" className="forgot_password_link">
+                Forgot Password?
+              </Link>
             </div>
             <div className="signin_button_main">
               <Link to="/register">
-                <Button className="register_btn" type="submit">
+                <Button
+                  className="register_btn"
+                  type="submit"
+                  disabled={isLoading}
+                >
                   Register
                 </Button>
               </Link>
-              <Button type="submit" className="signin_login_btn">
-                Login
+              <Button
+                type="submit"
+                className="signin_login_btn"
+                disabled={isLoading}
+              >
+                {isLoading ? "Login..." : "Login"}
               </Button>
             </div>
           </Box>
@@ -141,8 +157,8 @@ const Signin = () => {
               <span className="signin_email_span">Or sign in with e-mail</span>
             </p>
             <div className="signin_div" onClick={() => handleOnClick()}>
-              <img src={googleLogo} className="googlelogo" alt="img"  /> Sign in with
-              Google
+              <img src={googleLogo} className="googlelogo" alt="img" /> Sign in
+              with Google
             </div>
           </div>
         </div>

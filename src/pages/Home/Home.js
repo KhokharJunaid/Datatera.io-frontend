@@ -241,8 +241,6 @@ const Home = () => {
         formData
       );
     } catch (error) {
-      // document.getElementById("upload_file_convert").value = "";
-      console.log("error", error);
       if (error?.response?.data?.detail) {
         toast(`${error?.response?.data?.detail}`, { type: "error" });
       } else if (error?.message) {
@@ -298,7 +296,6 @@ const Home = () => {
           setLoadingData("");
         }
       } catch (error) {
-        console.log(error);
         setLoadingData("");
       }
     }
@@ -306,9 +303,6 @@ const Home = () => {
 
   const handleChangeUploadFile = async (e) => {
     let file = e.target.files[0];
-    // console.log(
-    //   console.log(`originalFile size before ${file.size / 1024 / 1024} MB`)
-    // );
     if (file?.size / 1024 / 1024 > 15) {
       toast("Maximum file size should be of 15mb", { type: "error" });
     } else {
@@ -425,7 +419,6 @@ const Home = () => {
     <>
       <>
         <div className="main">
-          {/* <div className={width <= 605 ? "hideSideBar" : "sidebar"}> */}
           <div className="sidebar">
             <Sidebar />
           </div>
@@ -508,7 +501,11 @@ const Home = () => {
                                   >
                                     <label
                                       for="upload_csv"
-                                      className={search?.remainingUploads === 0 ? "upload_csv_btn m-1 disabled " : "upload_csv_btn m-1" }
+                                      className={
+                                        search?.remainingUploads === 0
+                                          ? "upload_csv_btn m-1 disabled "
+                                          : "upload_csv_btn m-1"
+                                      }
                                     >
                                       Upload CSV files
                                     </label>

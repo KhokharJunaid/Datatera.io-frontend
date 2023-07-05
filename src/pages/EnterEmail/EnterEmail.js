@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, TextField } from "@mui/material";
+import { Box, CircularProgress, TextField } from "@mui/material";
 import styles from "../EnterEmail/EnterEmail.module.css";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +11,7 @@ import api from "../../api";
 
 function EnterEmail() {
   const navigate = useNavigate();
-  const [isdisabled , setIsDisabled] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const initialValues = {
     email: "",
@@ -23,21 +22,17 @@ function EnterEmail() {
   });
 
   const onSubmit = async (values, resetForm) => {
-    setIsDisabled(true)
-    console.log(values);
+    setIsLoading(true);
     try {
       const res = await api.post("/user/forgot-password", values);
       if (res.data.message) {
         toast(res.data.message);
         navigate("/email-sent");
         resetForm();
-        setIsDisabled(true)
-
+        setIsLoading(false);
       }
-
-     } catch (error) {
+    } catch (error) {
       toast(error?.response?.data?.message, { type: "error" });
-      console.log(error);
     }
   };
 
@@ -54,6 +49,11 @@ function EnterEmail() {
           <p className={styles.explore_future_heading}>
             Please enter your email
           </p>
+          {isLoading && (
+            <div className={styles.spinner}>
+              <CircularProgress style={{ color: "#4aa181" }} />
+            </div>
+          )}
           <Box
             className={styles.form}
             component="form"
@@ -64,16 +64,20 @@ function EnterEmail() {
               type="email"
               label="Email"
               name="email"
+              disabled={isLoading}
               variant="outlined"
-            
               style={{ marginBottom: "1rem", width: "100%" }}
               {...formik.getFieldProps("email")}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
             />
 
-            <Button disabled={isdisabled}  type="submit" className={styles.signin_login_btn}>
-              Submit
+            <Button
+              disabled={isLoading}
+              type="submit"
+              className={styles.signin_login_btn}
+            >
+              {isLoading ? "Submiting..." : "Submit"}
             </Button>
           </Box>
         </div>
