@@ -508,12 +508,17 @@ const Home = () => {
                                   >
                                     <label
                                       for="upload_csv"
-                                      className="upload_csv_btn m-1 "
+                                      className={search?.remainingUploads === 0 ? "upload_csv_btn m-1 disabled " : "upload_csv_btn m-1" }
                                     >
-                                      Upload CSV file
+                                      Upload CSV files
                                     </label>
 
                                     <Button
+                                      disabled={
+                                        search?.remainingUploads === 0
+                                          ? true
+                                          : false
+                                      }
                                       variant="dark"
                                       style={{
                                         width: "263px",
