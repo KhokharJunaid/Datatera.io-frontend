@@ -27,7 +27,7 @@ import UploadTextModal from "../../modals/UploadTextModal/UploadTextModal";
 import useWindowDimensions from "../../utiles/getWindowDimensions";
 import "./Home.css";
 import PricingModal from "../../components/PricingModal";
-import { plan1, plan2, plan3 } from "../../service/plan";
+import { plan1, plan2, plan3, plans } from "../../service/plan";
 
 const Home = () => {
   const { list, setListItems, openSideBar, setOpenSideBar } =
@@ -399,6 +399,14 @@ const Home = () => {
       });
   };
 
+  const [userPlan, setUserPlan] = useState();
+
+  const getUserPlan = async () => {
+    await api
+      .get(`/user/me`)
+      .then((res) => setUserPlan(res.data?.subscriptions));
+  };
+
   const handleMailLinkClick = (event) => {
     // event.preventDefault();
     const mailtoLink = "mailto:mi5853361@gmail.com";
@@ -413,6 +421,7 @@ const Home = () => {
 
   useEffect(() => {
     handleTotalUploads();
+    getUserPlan();
   }, []);
 
   return (
@@ -767,9 +776,11 @@ const Home = () => {
                           <div className="Pricing_modal">
                             <div className="plan"> Your plan </div>
                             <div className="  call_component">
-                              <PricingModal plan={plan1} />
-                              <PricingModal plan={plan2} />
-                              <PricingModal plan={plan3} />
+                              {
+                                plans.map((plan) => (
+                                  <PricingModal key={plan.id} userPlan={userPlan} plan={plan} />
+                                ))
+                              }
                             </div>
                             <div className="contact_info">
                               <div className="contact">
