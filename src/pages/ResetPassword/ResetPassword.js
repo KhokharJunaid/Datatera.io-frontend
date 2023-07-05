@@ -54,6 +54,7 @@ const ResetPassword = () => {
       }
       setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       toast(error?.response?.data?.message, { type: "error" });
     }
   };
