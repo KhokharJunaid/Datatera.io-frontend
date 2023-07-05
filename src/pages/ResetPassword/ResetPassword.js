@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, TextField } from "@mui/material";
+import { Box, CircularProgress, TextField } from "@mui/material";
 import styles from "../ResetPassword/ResetPassword.module.css";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -15,17 +15,10 @@ const ResetPassword = () => {
 
   const [showpassword, setShowpassword] = useState(false);
   const [showconfirmPassword, setShowconfirmPassword] = useState(false);
-  const [isloading  , setIsLoading] = useState(false)
+  const [isloading, setIsLoading] = useState(false);
 
   const urlSearchParams = new URLSearchParams(window.location.search);
   const token = urlSearchParams.get("token");
-  console.log("url in the ", token);
-
-  //  useEffect(() => {
-  //     const urlSearchParams = new URLSearchParams(window.location.search);
-  //   const token = urlSearchParams.get('token');
-  //   console.log("url in the ",token);
-  // }, []);
 
   const initialValues = {
     confirmPassword: "",
@@ -43,8 +36,8 @@ const ResetPassword = () => {
   });
 
   const onSubmit = async (values, resetForm) => {
-    setIsLoading(true)
     try {
+      setIsLoading(true);
       const res = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/user/reset-password`,
         values,
@@ -54,14 +47,11 @@ const ResetPassword = () => {
           },
         }
       );
-
-      if(res.data.message){
+      if (res.data.message) {
         navigate("/");
         resetForm();
-
       }
-      console.log("res=======>", res);
-     
+      setIsLoading(false);
     } catch (error) {
       toast(error?.response?.data?.message, { type: "error" });
     }
@@ -80,6 +70,11 @@ const ResetPassword = () => {
           <p className={styles.explore_future_heading}>
             Please enter your new password
           </p>
+          {isloading && (
+            <div className={styles.spinner}>
+              <CircularProgress style={{ color: "#4aa181" }} />
+            </div>
+          )}
           <Box
             className={styles.form}
             component="form"
@@ -91,6 +86,7 @@ const ResetPassword = () => {
                 type={showpassword ? "text" : "password"}
                 name="password"
                 label="Password"
+                disabled={isloading}
                 variant="outlined"
                 style={{ marginBottom: "1rem", width: "100%" }}
                 {...formik.getFieldProps("password")}
@@ -124,6 +120,7 @@ const ResetPassword = () => {
                 name="confirmPassword"
                 label="Confirm Password"
                 variant="outlined"
+                disabled={isloading}
                 style={{ marginBottom: "1rem", width: "100%" }}
                 {...formik.getFieldProps("confirmPassword")}
                 error={
@@ -153,8 +150,12 @@ const ResetPassword = () => {
                 />
               )}
             </div>
-            <Button type="submit" disabled={isloading} className={styles.signin_login_btn}>
-              Reset Password
+            <Button
+              type="submit"
+              disabled={isloading}
+              className={styles.signin_login_btn}
+            >
+              {isloading ? "Reset Password..." : "Reset Password"}
             </Button>
           </Box>
         </div>

@@ -26,7 +26,6 @@ const GoogleSheetModal = (props) => {
   const [sheetData, setSheetData] = useState(null);
   const listFiles = (searchTerm = null) => {
     setIsFetchingGoogleDriveFiles(true);
-    // console.log(gapi.client.drive.files);
     gapi.client.drive.files
       .list({
         // pageSize: 10,

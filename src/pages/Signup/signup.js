@@ -4,7 +4,6 @@ import { Button } from "react-bootstrap";
 import { signInWithPopup } from "firebase/auth";
 import { toast } from "react-toastify";
 import api from "../../api/index";
-import catchAsync from "../../utiles/catchAsync";
 import googleLogo from "../../assets/images/googlelogo.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import logo from "../../assets/images/logo.jpg";
@@ -12,13 +11,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, provider } from "../../config/firebaseConfig";
 import "./signup.css";
 import { useFormik } from "formik";
-import { Box, TextField } from "@mui/material";
+import { Box, CircularProgress, TextField } from "@mui/material";
 
 const Signup = () => {
   const navigate = useNavigate();
 
   const [showpassword, setShowpassword] = useState(false);
   const [showconfirmpassword, setConfirmpassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const initialValues = {
     email: "",
@@ -30,19 +30,16 @@ const Signup = () => {
     email: yup.string().email("Invalid email format").required("."),
     password: yup.string().required("."),
     passwordConfirm: yup.string().required("."),
-    // passwordConfirm: yup
-    // .string()
-    // .oneOf([yup.ref("password"), null], "Passwords must match")
-    // .required(),
   });
 
   const onSubmit = async (values, resetForm) => {
     try {
+      setIsLoading(true);
       if (
         values?.password === values?.passwordConfirm &&
         values?.password?.length >= 8
       ) {
-        const res = await api.post("/user/register", values);
+        await api.post("/user/register", values);
         navigate("/");
         resetForm();
       } else if (values?.password?.length < 8) {
@@ -54,9 +51,9 @@ const Signup = () => {
           type: "error",
         });
       }
+      setIsLoading(false);
     } catch (error) {
       toast(error?.response?.data?.message, { type: "error" });
-      console.log(error);
     }
   };
 
@@ -69,26 +66,30 @@ const Signup = () => {
         token: res?.user?.accessToken,
       };
       try {
-        let res = await api.post("/user/googleSignin", data);
+        await api.post("/user/googleSignin", data);
         navigate("/app");
-        // localStorage.setItem("user", JSON.stringify(res.data.user));
       } catch (error) {
         toast("Some Error while logged in!", { type: "error" });
-        console.log(error);
       }
     });
   };
+
   const formik = useFormik({ initialValues, validationSchema, onSubmit });
 
   return (
     <div className="signup_main">
       <div className="pic_div">
-        <img src={logo} className="logo" />
+        <img src={logo} className="logo" alt="" />
       </div>
       <div className="signUpInner">
         <div className="signup">
           <h6 className="register_heading">Register</h6>
           <p className="explore_future_heading">Explore the future with us</p>
+          {isLoading && (
+            <div className="spinner">
+              <CircularProgress style={{ color: "#4aa181" }} />
+            </div>
+          )}
           <Box
             className="form"
             component="form"
@@ -99,6 +100,7 @@ const Signup = () => {
               type="email"
               label="Email"
               name="email"
+              disabled={isLoading}
               variant="outlined"
               className="register_input_field"
               {...formik.getFieldProps("email")}
@@ -108,6 +110,7 @@ const Signup = () => {
             <div className="eye_icon_main">
               <TextField
                 type={showpassword ? "text" : "password"}
+                disabled={isLoading}
                 name="password"
                 label="Password"
                 variant="outlined"
@@ -142,6 +145,7 @@ const Signup = () => {
                 name="passwordConfirm"
                 label="Password Confirm"
                 className="register_input_field"
+                disabled={isLoading}
                 variant="outlined"
                 {...formik.getFieldProps("passwordConfirm")}
                 error={
@@ -174,12 +178,16 @@ const Signup = () => {
             </div>
             <div className="button_main">
               <Link to="/">
-                <Button className="Login_btn" type="submit">
+                <Button
+                  className="Login_btn"
+                  type="submit"
+                  disabled={isLoading}
+                >
                   Login
                 </Button>
               </Link>
-              <Button className="signup_btn" type="submit">
-                Signup
+              <Button className="signup_btn" type="submit" disabled={isLoading}>
+                {isLoading ? "Signup..." : "Signup"}
               </Button>
             </div>
           </Box>
@@ -192,7 +200,7 @@ const Signup = () => {
                 src={googleLogo}
                 className="googlelogo"
                 alt="google signin"
-              />{" "}
+              />
               Sign in with Google
             </div>
           </div>
