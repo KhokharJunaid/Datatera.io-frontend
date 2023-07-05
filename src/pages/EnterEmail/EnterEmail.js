@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, CircularProgress, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import styles from "../EnterEmail/EnterEmail.module.css";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import logo from "../../assets/images/logo.jpg";
 import { useFormik } from "formik";
 import { Button } from "react-bootstrap";
 import api from "../../api";
+import Loader from "../../components/shared/loader/Loader";
 
 function EnterEmail() {
   const navigate = useNavigate();
@@ -49,11 +50,7 @@ function EnterEmail() {
           <p className={styles.explore_future_heading}>
             Please enter your email
           </p>
-          {isLoading && (
-            <div className={styles.spinner}>
-              <CircularProgress style={{ color: "#4aa181" }} />
-            </div>
-          )}
+          {isLoading && <Loader />}
           <Box
             className={styles.form}
             component="form"

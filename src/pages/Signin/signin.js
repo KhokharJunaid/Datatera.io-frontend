@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Box, CircularProgress, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import "./signin.css";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,12 +13,13 @@ import logo from "../../assets/images/logo.jpg";
 import { auth, provider } from "../../config/firebaseConfig";
 import { AuthContext } from "../../context/auth";
 import { useFormik } from "formik";
+import Loader from "../../components/shared/loader/Loader";
 
 const Signin = () => {
   const { loginSuccess } = useContext(AuthContext);
 
   const [showpassword, setShowpassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -74,11 +75,7 @@ const Signin = () => {
         <div className="signin">
           <h6 className="login_heading">Login</h6>
           <p className="explore_future_heading">Explore the future with us</p>
-          {isLoading && (
-            <div className="spinner">
-              <CircularProgress style={{ color: "#4aa181" }} />
-            </div>
-          )}
+          {isLoading && <Loader />}
           <Box
             className="form"
             component="form"
