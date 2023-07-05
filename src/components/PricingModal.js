@@ -6,8 +6,6 @@ import { toast } from "react-toastify";
 import api from "../api";
 
 function PricingModal({ plan, userPlan }) {
-  
-
 
   const navigate = useNavigate();
   const subscribePlan = async (plan) => {
@@ -21,20 +19,9 @@ function PricingModal({ plan, userPlan }) {
     }
   };
 
-  const enterpricePlan = async (plan) => {
-    try {
-      const res = await api.post(`/user//subscription?plan=${plan}`);
-
-      if (res.data.message) {
-        const mailtoLink = "mailto:mi5853361@gmail.com";
+  const enterpricePlan = () => {
+        const mailtoLink = "mailto:info@binarymarvel.com";
         window.location.href = mailtoLink;
-      }
-
-
-    } catch (error) {
-      toast(error?.response?.data?.message, { type: "error" });
-    }
-   
   };
 
   return (
@@ -49,7 +36,7 @@ function PricingModal({ plan, userPlan }) {
           onClick={plan?.title !== "FREE" && (userPlan?.length > 0 && plan?.title !== userPlan[0]?.name) ? () => {
             plan?.btn_title === "Subscribe"
               ? subscribePlan(plan?.title)
-              : enterpricePlan(plan?.title);
+              : enterpricePlan()
           } : () => {}}
      
           className={userPlan?.map((currentPlan) => {
@@ -70,7 +57,12 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.description}>
         <div>
           <img
-            src={plan.title === "FREE" ? "/icon_2.png" : "/icon_1.png"}
+           src={userPlan?.map((currentPlan) => {
+            return currentPlan?.name === plan?.title
+              ? "/icon_2.png"
+              :  "/icon_1.png"
+          })}
+     
             alt="img"
           />
         </div>
@@ -79,7 +71,11 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.description}>
         <div>
           <img
-            src={plan.title === "FREE" ? "/icon_2.png" : "/icon_1.png"}
+          src={userPlan?.map((currentPlan) => {
+            return currentPlan?.name === plan?.title
+              ? "/icon_2.png"
+              :  "/icon_1.png"
+          })}
             alt="img"
           />
         </div>
@@ -88,7 +84,11 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.description}>
         <div>
           <img
-            src={plan.title === "FREE" ? "/icon_2.png" : "/icon_1.png"}
+            src={userPlan?.map((currentPlan) => {
+              return currentPlan?.name === plan?.title
+                ? "/icon_2.png"
+                :  "/icon_1.png"
+            })}
             alt="img"
           />
         </div>
