@@ -6,9 +6,6 @@ import { toast } from "react-toastify";
 import api from "../api";
 
 function PricingModal({ plan, userPlan }) {
-  
-
-
   const navigate = useNavigate();
   const subscribePlan = async (plan) => {
     try {
@@ -21,20 +18,9 @@ function PricingModal({ plan, userPlan }) {
     }
   };
 
-  const enterpricePlan = async (plan) => {
-    try {
-      const res = await api.post(`/user//subscription?plan=${plan}`);
-
-      if (res.data.message) {
-        const mailtoLink = "mailto:mi5853361@gmail.com";
-        window.location.href = mailtoLink;
-      }
-
-
-    } catch (error) {
-      toast(error?.response?.data?.message, { type: "error" });
-    }
-   
+  const enterpricePlan = async () => {
+    const mailtoLink = "mailto:info@binarymarvels.com";
+    window.location.href = mailtoLink;
   };
 
   return (
@@ -46,25 +32,30 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.modal_btn}>
         <Button
           variant="secondary"
-          onClick={plan?.title !== "FREE" && (userPlan?.length > 0 && plan?.title !== userPlan[0]?.name) ? () => {
-            plan?.btn_title === "Subscribe"
-              ? subscribePlan(plan?.title)
-              : enterpricePlan(plan?.title);
-          } : () => {}}
-     
+          onClick={
+            plan?.title !== "FREE" &&
+            userPlan?.length > 0 &&
+            plan?.title !== userPlan[0]?.name
+              ? () => {
+                  plan?.btn_title === "Subscribe"
+                    ? subscribePlan(plan?.title)
+                    : enterpricePlan();
+                }
+              : () => {}
+          }
           className={userPlan?.map((currentPlan) => {
             return currentPlan?.name === plan?.title
-              ? ( styles.freebtn )
-              : ( plan?.title === "FREE" ?  styles.btn1 : styles.btn )
-           })}
-        
+              ? styles.freebtn
+              : plan?.title === "FREE"
+              ? styles.btn1
+              : styles.btn;
+          })}
         >
           {userPlan?.map((currentPlan) => {
             return currentPlan?.name === plan?.title
               ? "Current plan"
               : plan?.btn_title;
           })}
-   
         </Button>
       </div>
       <div className={styles.description}>
