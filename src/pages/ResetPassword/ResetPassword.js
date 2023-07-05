@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, CircularProgress, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import styles from "../ResetPassword/ResetPassword.module.css";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import logo from "../../assets/images/logo.jpg";
 import { useFormik } from "formik";
 import axios from "axios";
+import Loader from "../../components/shared/loader/Loader";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -70,11 +71,7 @@ const ResetPassword = () => {
           <p className={styles.explore_future_heading}>
             Please enter your new password
           </p>
-          {isloading && (
-            <div className={styles.spinner}>
-              <CircularProgress style={{ color: "#4aa181" }} />
-            </div>
-          )}
+          {isloading && <Loader />}
           <Box
             className={styles.form}
             component="form"

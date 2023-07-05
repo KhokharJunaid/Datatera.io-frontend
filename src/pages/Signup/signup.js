@@ -11,7 +11,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, provider } from "../../config/firebaseConfig";
 import "./signup.css";
 import { useFormik } from "formik";
-import { Box, CircularProgress, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
+import Loader from "../../components/shared/loader/Loader";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -85,11 +86,7 @@ const Signup = () => {
         <div className="signup">
           <h6 className="register_heading">Register</h6>
           <p className="explore_future_heading">Explore the future with us</p>
-          {isLoading && (
-            <div className="spinner">
-              <CircularProgress style={{ color: "#4aa181" }} />
-            </div>
-          )}
+          {isLoading && <Loader />}
           <Box
             className="form"
             component="form"
