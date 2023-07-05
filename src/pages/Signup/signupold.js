@@ -57,7 +57,6 @@ const Signup = () => {
         // localStorage.setItem("user", JSON.stringify(res.data.user));
       } catch (error) {
         toast("Some Error while logged in!", { type: "error" });
-        console.log(error);
       }
     });
   };
@@ -65,7 +64,7 @@ const Signup = () => {
   return (
     <div className="signup_main">
       <div className="pic_div">
-        <img src={logo} className="logo" />
+        <img src={logo} className="logo" alt="" />
       </div>
       <div className="signup">
         <h6 className="register_heading">Register</h6>

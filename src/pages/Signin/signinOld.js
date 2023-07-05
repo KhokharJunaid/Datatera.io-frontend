@@ -47,7 +47,6 @@ const Signup = () => {
         // localStorage.setItem("user", JSON.stringify(res.data.user));
       } catch (error) {
         toast("Some Error while logged in!", { type: "error" });
-        console.log(error);
       }
     });
   };
