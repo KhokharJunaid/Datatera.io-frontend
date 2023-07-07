@@ -27,8 +27,6 @@ import UploadModal from "../../modals/UploadFileModal/UploadModal.js";
 import UploadTextModal from "../../modals/UploadTextModal/UploadTextModal";
 import useWindowDimensions from "../../utiles/getWindowDimensions";
 import "./Home.css";
-import PricingModal from "../../components/PricingModal";
-import { plans } from "../../service/plan";
 
 const Home = () => {
   const { list, openSideBar, setOpenSideBar } = useContext(ListContext);
@@ -277,15 +275,12 @@ const Home = () => {
             console.log(convertedData);
           }
 
-          let updatedTable = await api.patch(
-            `/conversion/updateData/${data?._id}`,
-            {
-              convertedData,
-              fileName: selectedFile?.name,
-              lastResponseData: res.data,
-              sheetDetails: sheetDetails,
-            }
-          );
+          await api.patch(`/conversion/updateData/${data?._id}`, {
+            convertedData,
+            fileName: selectedFile?.name,
+            lastResponseData: res.data,
+            sheetDetails: sheetDetails,
+          });
 
           setUploadShow(false);
           setUploadTextShow(false);
@@ -324,24 +319,18 @@ const Home = () => {
           console.log("updatedData", updatedData);
         }
 
-        let updatedTable = await api.patch(
-          `/conversion/updateData/${data?._id}`,
-          {
-            data: updatedData?.data,
-          }
-        );
+        await api.patch(`/conversion/updateData/${data?._id}`, {
+          data: updatedData?.data,
+        });
         // setTableData(updatedData);
         // setData(updatedData?.data[0]?.tableData);
         getConversionData();
       } else {
         let d = data?.convertedData;
         d?.splice(index, 1);
-        let updatedTable = await api.patch(
-          `/conversion/updateData/${data?._id}`,
-          {
-            convertedData: d,
-          }
-        );
+        await api.patch(`/conversion/updateData/${data?._id}`, {
+          convertedData: d,
+        });
         setData({ ...data, convertedData: d });
       }
     } catch (error) {
@@ -408,12 +397,6 @@ const Home = () => {
     await api
       .get(`/user/me`)
       .then((res) => setUserPlan(res.data?.subscriptions));
-  };
-
-  const handleMailLinkClick = (event) => {
-    // event.preventDefault();
-    const mailtoLink = "mailto:mi5853361@gmail.com";
-    window.location.href = mailtoLink;
   };
 
   const handleTotalUploads = async () => {
@@ -800,41 +783,6 @@ const Home = () => {
                           </div>
                         ) : null}
                       </Tab>
-                      <Tab
-                        eventKey="pricing"
-                        title="Pricing"
-                        className="conversion"
-                      >
-                        <div className="prcing">
-                          <div className="Pricing_modal">
-                            <div className="plan"> Your plan </div>
-                            <div className="  call_component">
-                              {plans.map((plan) => (
-                                <PricingModal
-                                  key={plan.id}
-                                  userPlan={userPlan}
-                                  plan={plan}
-                                />
-                              ))}
-                            </div>
-                            <div className="contact_info">
-                              <div className="contact">
-                                Contact Us for Special Offers:
-                              </div>
-                              <div
-                                className="contact_ref"
-                                onClick={() => handleMailLinkClick()}
-                              >
-                                {" "}
-                                contacts@datatera.io{" "}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Tab>
-                      {/* <Tab eventKey="history" title="History">
-   There will be the History!
- </Tab> */}
                     </Tabs>
                   </div>
                 </div>

@@ -7,6 +7,7 @@ import api from "../api";
 
 function PricingModal({ plan, userPlan }) {
   const navigate = useNavigate();
+
   const subscribePlan = async (plan) => {
     try {
       const res = await api.post(`/user//subscription?plan=${plan}`);
@@ -19,7 +20,7 @@ function PricingModal({ plan, userPlan }) {
   };
 
   const enterpricePlan = async () => {
-    const mailtoLink = "mailto:info@binarymarvels.com";
+    const mailtoLink = "mailto:contacts@datatera.io";
     window.location.href = mailtoLink;
   };
 

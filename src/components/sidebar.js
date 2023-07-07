@@ -5,6 +5,7 @@ import Drawer from "react-modern-drawer";
 import Chat_icon from "../assets/images/Chat_icon.png";
 import close from "../assets/images/close.png";
 import logout_icon from "../assets/images/logout_icon.png";
+import upgrade_icon from "../assets/images/plus.png";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import catchAsync from "../utiles/catchAsync";
 import { Formik } from "formik";
@@ -16,6 +17,8 @@ import { AuthContext } from "../context/auth";
 import { ListContext } from "../context/list";
 import useWindowDimensions from "../utiles/getWindowDimensions";
 import "./sideBar.css";
+import PricingModal from "./PricingModal";
+import { plans } from "../service/plan";
 
 const Sidebar = () => {
   const { list, setListItems, openSideBar, setOpenSideBar } =
@@ -29,8 +32,6 @@ const Sidebar = () => {
 
   const [param, setParams] = React.useState(null);
   const [firstCheckLocation, setFirstCheckLocation] = React.useState(true);
-
-  //
 
   const handleButtonClick = (_id) => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -51,6 +52,9 @@ const Sidebar = () => {
     setIsOpen((prevState) => !prevState);
   };
   const [show, setShow] = useState(false);
+  const [showPriceModal, setPriceModalShow] = useState(false);
+  const [userPlan, setUserPlan] = useState();
+
   const [conversions, setConversions] = useState();
 
   const schema = yup.object().shape({
@@ -58,6 +62,22 @@ const Sidebar = () => {
   });
 
   const handleShow = () => setShow(true);
+  const handlePriceModalShow = () => setPriceModalShow(true);
+
+  const getUserPlan = async () => {
+    await api
+      .get(`/user/me`)
+      .then((res) => setUserPlan(res.data?.subscriptions));
+  };
+
+  const handleMailLinkClick = () => {
+    const mailtoLink = "mailto:contacts@datatera.io";
+    window.location.href = mailtoLink;
+  };
+
+  useEffect(() => {
+    getUserPlan();
+  }, []);
 
   const handleSubmit = catchAsync(async (values, resetForm) => {
     if (updateConversion == null) {
@@ -78,7 +98,7 @@ const Sidebar = () => {
       let res = await api.patch(`/conversion/${updateConversion._id}`, values);
       setConversions(
         conversions.map((elem) => {
-          if (elem._id == res.data.data._id) {
+          if (elem._id === res.data.data._id) {
             return (elem = res.data.data);
           } else {
             return elem;
@@ -101,6 +121,10 @@ const Sidebar = () => {
     setShow(false);
   };
 
+  const handlePriceModalClose = () => {
+    setPriceModalShow(false);
+  };
+
   const getAllConversions = catchAsync(async () => {
     let userId = JSON.parse(localStorage.getItem("user"))?._id;
     let res = await api.get(`/conversion/all-notes/${userId}`);
@@ -111,6 +135,7 @@ const Sidebar = () => {
     handleButtonClickget();
     getAllConversions();
     setListItems("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -139,10 +164,11 @@ const Sidebar = () => {
 
     //   navigate("?" + queryParams.toString());
     // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param, conversions, firstCheckLocation]);
 
   const deleteConversions = catchAsync(async (id) => {
-    let res = await api.delete(`/conversion/${id}`);
+    await api.delete(`/conversion/${id}`);
     let currCons = JSON.parse(localStorage.getItem("currentConverstion"));
     if (currCons === id) {
       localStorage.removeItem("currentConverstion");
@@ -245,27 +271,73 @@ const Sidebar = () => {
             <div>
               {/* <p className="all_history_heading">All History</p> */}
               <hr />
-              {/* <div className="updates_faq_div">
-                <img
-                  src={updates_icon}
-                  alt="update-icon"
-                  className="update_icon"
-                />
-                <span>Updates & FAQ</span>
-              </div> */}
-              <div className="updates_faq_div" onClick={Logout}>
-                <img
-                  src={logout_icon}
-                  alt="update-icon"
-                  className="update_icon"
-                />
-                <span>Log out</span>
+              <div className="sidebar_btns_main">
+                <div className="updates_faq_div" onClick={handlePriceModalShow}>
+                  <img
+                    src={upgrade_icon}
+                    alt="update-icon"
+                    className="update_icon"
+                  />
+                  <span>Upgrade to Plus</span>
+                </div>
+
+                {/* <div className="updates_faq_div">
+                  <img
+                    src={update_icon}
+                    alt="update-icon"
+                    className="update_icon"
+                  />
+                  <span>Updates & FAQ</span>
+                </div> */}
+
+                <div className="updates_faq_div" onClick={Logout}>
+                  <img
+                    src={logout_icon}
+                    alt="update-icon"
+                    className="update_icon"
+                  />
+                  <span>Log out</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </Drawer>
 
+      {/* Modal For Pricing */}
+      <Modal
+        show={showPriceModal}
+        onHide={handlePriceModalClose}
+        centered
+        className="plan_modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title className="conversionTitle">Your Plan</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="plan_modal_body">
+          <div className="prcing">
+            <div className="Pricing_modal">
+              {/* <div className="plan"> Your plan </div> */}
+              <div className="call_component">
+                {plans?.map((plan) => (
+                  <PricingModal key={plan.id} userPlan={userPlan} plan={plan} />
+                ))}
+              </div>
+              <div className="contact_info">
+                <div className="contact">Contact Us for Special Offers:</div>
+                <div
+                  className="contact_ref"
+                  onClick={() => handleMailLinkClick()}
+                >
+                  contacts@datatera.io
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      {/* Modal for conversion */}
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title className="conversionTitle">

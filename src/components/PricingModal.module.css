@@ -6,6 +6,7 @@
   padding: 10px;
   border: 1px solid #d9d9e3;
 }
+
 .title {
   display: flex;
   justify-content: flex-start;
@@ -16,9 +17,11 @@
   font-weight: 600;
   margin-bottom: 10px;
 }
+
 .p_color {
   color: #4aa181;
 }
+
 .modal_btn {
   display: flex;
   justify-content: center;
@@ -26,6 +29,7 @@
   width: 100%;
   margin-bottom: 20px;
 }
+
 .btn {
   display: flex;
   justify-content: center;
@@ -61,6 +65,7 @@
   margin-top: 5px;
   margin-left: 10px;
 }
+
 .btn1 {
   display: flex;
   justify-content: center;
@@ -74,5 +79,4 @@
   font-weight: 600;
   color: white !important;
   cursor: not-allowed !important;
-  /* pointer-events: none !important; */
 }
