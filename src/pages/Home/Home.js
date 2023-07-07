@@ -499,8 +499,13 @@ const Home = () => {
                               fontWeight: "bold",
                             }}
                           >
-                            Remaining uploads: {search?.remainingUploads}/
-                            {search?.totalUploads}
+                            {search.remainingUploads !== null &&
+                              search.totalUploads !== null && (
+                                <span>
+                                  Remaining uploads: {search?.remainingUploads}/
+                                  {search?.totalUploads}
+                                </span>
+                              )}
                           </div>
                         )}
                         {step === "step1" && list ? (
@@ -525,8 +530,8 @@ const Home = () => {
                                       }`}
                                       style={{ marginBottom: "10px" }}
                                     >
-                                      Your remaining uploads will be not enough
-                                      to upload file
+                                      You have used your daily number of
+                                      uploads.
                                     </div>
                                   )}
                                   <Form.Control
