@@ -278,7 +278,7 @@ const Sidebar = () => {
                     alt="update-icon"
                     className="update_icon"
                   />
-                  <span>Upgrade to Plus</span>
+                  <span>Subscriptions</span>
                 </div>
 
                 {/* <div className="updates_faq_div">

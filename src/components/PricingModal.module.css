@@ -80,3 +80,14 @@
   color: white !important;
   cursor: not-allowed !important;
 }
+
+@media (max-width: 885px) {
+  .your_plan {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 260px;
+    padding: 10px;
+    border: 1px solid #d9d9e3;
+  }
+}
