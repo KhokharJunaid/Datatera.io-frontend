@@ -20,7 +20,7 @@ import "./sideBar.css";
 import PricingModal from "./PricingModal";
 import { plans } from "../service/plan";
 
-const Sidebar = () => {
+const Sidebar = ({ userPlan }) => {
   const { list, setListItems, openSideBar, setOpenSideBar } =
     useContext(ListContext);
   const { width } = useWindowDimensions();
@@ -53,7 +53,7 @@ const Sidebar = () => {
   };
   const [show, setShow] = useState(false);
   const [showPriceModal, setPriceModalShow] = useState(false);
-  const [userPlan, setUserPlan] = useState();
+  // const [userPlan, setUserPlan] = useState();
 
   const [conversions, setConversions] = useState();
 
@@ -64,20 +64,20 @@ const Sidebar = () => {
   const handleShow = () => setShow(true);
   const handlePriceModalShow = () => setPriceModalShow(true);
 
-  const getUserPlan = async () => {
-    await api
-      .get(`/user/me`)
-      .then((res) => setUserPlan(res.data?.subscriptions));
-  };
+  // const getUserPlan = async () => {
+  //   await api
+  //     .get(`/user/me`)
+  //     .then((res) => setUserPlan(res.data?.subscriptions));
+  // };
 
   const handleMailLinkClick = () => {
     const mailtoLink = "mailto:contacts@datatera.io";
     window.location.href = mailtoLink;
   };
 
-  useEffect(() => {
-    getUserPlan();
-  }, []);
+  // useEffect(() => {
+  //   getUserPlan();
+  // }, []);
 
   const handleSubmit = catchAsync(async (values, resetForm) => {
     if (updateConversion == null) {

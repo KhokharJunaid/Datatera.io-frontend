@@ -5,14 +5,19 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api";
 
-function PricingModal({ plan, userPlan }) {
+function PricingModal({ plan, userPlan: commingPlan }) {
   const navigate = useNavigate();
+  const userPlan = commingPlan[0];
 
   const subscribePlan = async (plan) => {
     try {
-      const res = await api.post(`/user//subscription?plan=${plan}`);
+      const res = await api.post(`/user/subscription?plan=${plan}`);
       if (res.data.message) {
-        navigate("/done-subscribe");
+        if (plan === "FREE") {
+          toast("Your package activated successfully", { type: "success" });
+        } else {
+          navigate("/done-subscribe");
+        }
       }
     } catch (error) {
       toast(error?.response?.data?.message, { type: "error" });
@@ -32,41 +37,28 @@ function PricingModal({ plan, userPlan }) {
       </div>
       <div className={styles.modal_btn}>
         <Button
-          variant="secondary"
-          onClick={
-            plan?.title !== "FREE" &&
-            userPlan?.length > 0 &&
-            plan?.title !== userPlan[0]?.name
-              ? () => {
-                  plan?.btn_title === "Subscribe"
-                    ? subscribePlan(plan?.title)
-                    : enterpricePlan();
-                }
-              : () => {}
+          // variant="secondary"
+          onClick={() => {
+            if (userPlan?.name !== plan?.title) {
+              plan?.title === "ENTERPRISE"
+                ? enterpricePlan()
+                : subscribePlan(plan?.title);
+            }
+          }}
+          className={
+            userPlan?.name === plan?.title ? styles?.freebtn : styles?.btn
           }
-          className={userPlan?.map((currentPlan) => {
-            return currentPlan?.name === plan?.title
-              ? styles.freebtn
-              : plan?.title === "FREE"
-              ? styles.btn1
-              : styles.btn;
-          })}
+          style={
+            userPlan?.name === plan?.title ? { cursor: "not-allowed" } : {}
+          }
         >
-          {userPlan?.map((currentPlan) => {
-            return currentPlan?.name === plan?.title
-              ? "Current plan"
-              : plan?.btn_title;
-          })}
+          {userPlan?.name === plan?.title ? "Current plan" : plan?.btn_title}
         </Button>
       </div>
       <div className={styles.description}>
         <div>
           <img
-            src={userPlan?.map((currentPlan) => {
-              return currentPlan?.name === plan?.title
-                ? "/icon_2.png"
-                : "/icon_1.png";
-            })}
+            src={userPlan?.name === plan?.title ? "/icon_2.png" : "/icon_1.png"}
             alt="img"
           />
         </div>
@@ -75,11 +67,7 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.description}>
         <div>
           <img
-            src={userPlan?.map((currentPlan) => {
-              return currentPlan?.name === plan?.title
-                ? "/icon_2.png"
-                : "/icon_1.png";
-            })}
+            src={userPlan?.name === plan?.title ? "/icon_2.png" : "/icon_1.png"}
             alt="img"
           />
         </div>
@@ -88,11 +76,7 @@ function PricingModal({ plan, userPlan }) {
       <div className={styles.description}>
         <div>
           <img
-            src={userPlan?.map((currentPlan) => {
-              return currentPlan?.name === plan?.title
-                ? "/icon_2.png"
-                : "/icon_1.png";
-            })}
+            src={userPlan?.name === plan?.title ? "/icon_2.png" : "/icon_1.png"}
             alt="img"
           />
         </div>
