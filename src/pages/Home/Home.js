@@ -430,7 +430,10 @@ const Home = () => {
     <>
       <div className="main">
         <div className="sidebar">
-          <Sidebar userPlan={userPlan} />
+          <Sidebar
+            userPlan={userPlan}
+            handleValidatePlan={handleValidatePlan}
+          />
         </div>
         {list === "noPer" ? (
           <div className="d-flex h-100 align-items-center justify-content-center">

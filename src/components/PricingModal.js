@@ -5,7 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api";
 
-function PricingModal({ plan, userPlan: commingPlan }) {
+function PricingModal({
+  plan,
+  userPlan: commingPlan,
+  setPriceModalShow,
+  handleValidatePlan,
+}) {
   const navigate = useNavigate();
   const userPlan = commingPlan[0];
 
@@ -13,10 +18,17 @@ function PricingModal({ plan, userPlan: commingPlan }) {
     try {
       const res = await api.post(`/user/subscription?plan=${plan}`);
       if (res.data.message) {
+        handleValidatePlan();
         if (plan === "FREE") {
           toast("Your package activated successfully", { type: "success" });
+          setPriceModalShow(false);
         } else {
-          navigate("/done-subscribe");
+          if (res.data.newSubscription) {
+            navigate("/done-subscribe");
+          } else {
+            toast("Your package activated successfully", { type: "success" });
+            setPriceModalShow(false);
+          }
         }
       }
     } catch (error) {
