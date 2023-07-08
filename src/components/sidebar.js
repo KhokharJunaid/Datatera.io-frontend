@@ -20,7 +20,7 @@ import "./sideBar.css";
 import PricingModal from "./PricingModal";
 import { plans } from "../service/plan";
 
-const Sidebar = ({ userPlan }) => {
+const Sidebar = ({ userPlan, handleValidatePlan }) => {
   const { list, setListItems, openSideBar, setOpenSideBar } =
     useContext(ListContext);
   const { width } = useWindowDimensions();
@@ -53,8 +53,6 @@ const Sidebar = ({ userPlan }) => {
   };
   const [show, setShow] = useState(false);
   const [showPriceModal, setPriceModalShow] = useState(false);
-  // const [userPlan, setUserPlan] = useState();
-
   const [conversions, setConversions] = useState();
 
   const schema = yup.object().shape({
@@ -64,20 +62,10 @@ const Sidebar = ({ userPlan }) => {
   const handleShow = () => setShow(true);
   const handlePriceModalShow = () => setPriceModalShow(true);
 
-  // const getUserPlan = async () => {
-  //   await api
-  //     .get(`/user/me`)
-  //     .then((res) => setUserPlan(res.data?.subscriptions));
-  // };
-
   const handleMailLinkClick = () => {
     const mailtoLink = "mailto:contacts@datatera.io";
     window.location.href = mailtoLink;
   };
-
-  // useEffect(() => {
-  //   getUserPlan();
-  // }, []);
 
   const handleSubmit = catchAsync(async (values, resetForm) => {
     if (updateConversion == null) {
@@ -320,7 +308,13 @@ const Sidebar = ({ userPlan }) => {
               {/* <div className="plan"> Your plan </div> */}
               <div className="call_component">
                 {plans?.map((plan) => (
-                  <PricingModal key={plan.id} userPlan={userPlan} plan={plan} />
+                  <PricingModal
+                    setPriceModalShow={setPriceModalShow}
+                    handleValidatePlan={handleValidatePlan}
+                    key={plan.id}
+                    userPlan={userPlan}
+                    plan={plan}
+                  />
                 ))}
               </div>
               <div className="contact_info">
