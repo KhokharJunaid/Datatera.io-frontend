@@ -312,7 +312,7 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
                     setPriceModalShow={setPriceModalShow}
                     handleValidatePlan={handleValidatePlan}
                     key={plan.id}
-                    userPlan={userPlan}
+                    userPlan={userPlan} 
                     plan={plan}
                   />
                 ))}
