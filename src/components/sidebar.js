@@ -62,10 +62,10 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
   const handleShow = () => setShow(true);
   const handlePriceModalShow = () => setPriceModalShow(true);
 
-  const handleMailLinkClick = () => {
-    const mailtoLink = "mailto:contacts@datatera.io";
-    window.location.href = mailtoLink;
-  };
+  // const handleMailLinkClick = () => {
+  //   const mailtoLink = "mailto:contacts@datatera.io";
+  //   window.location.href = mailtoLink;
+  // };
 
   const handleSubmit = catchAsync(async (values, resetForm) => {
     if (updateConversion == null) {
@@ -312,7 +312,7 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
                     setPriceModalShow={setPriceModalShow}
                     handleValidatePlan={handleValidatePlan}
                     key={plan.id}
-                    userPlan={userPlan} 
+                    userPlan={userPlan}
                     plan={plan}
                   />
                 ))}
@@ -321,9 +321,9 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
                 <div className="contact">Contact Us for Special Offers:</div>
                 <div
                   className="contact_ref"
-                  onClick={() => handleMailLinkClick()}
+                  // onClick={() => handleMailLinkClick()}
                 >
-                  contacts@datatera.io
+                  <a href="mailto:contacts@datatera.io">contacts@datatera.io</a>
                 </div>
               </div>
             </div>

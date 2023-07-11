@@ -48,24 +48,28 @@ function PricingModal({
         <div className={styles.p_color}>{plan?.price}</div>
       </div>
       <div className={styles.modal_btn}>
-        <Button
-          // variant="secondary"
-          onClick={() => {
-            if (userPlan?.name !== plan?.title) {
-              plan?.title === "ENTERPRISE"
-                ? enterpricePlan()
-                : subscribePlan(plan?.title);
-            }
-          }}
-          className={
-            userPlan?.name === plan?.title ? styles?.freebtn : styles?.btn
-          }
-          style={
-            userPlan?.name === plan?.title ? { cursor: "not-allowed" } : {}
-          }
+        <a
+          style={{ width: "100%" }}
+          href={plan?.title === "ENTERPRISE" && "mailto:contacts@datatera.io"}
         >
-          {userPlan?.name === plan?.title ? "Current plan" : plan?.btn_title}
-        </Button>
+          <Button
+            onClick={() => {
+              if (userPlan?.name !== plan?.title) {
+                plan?.title === "ENTERPRISE"
+                  ? enterpricePlan()
+                  : subscribePlan(plan?.title);
+              }
+            }}
+            className={
+              userPlan?.name === plan?.title ? styles?.freebtn : styles?.btn
+            }
+            style={
+              userPlan?.name === plan?.title ? { cursor: "not-allowed" } : {}
+            }
+          >
+            {userPlan?.name === plan?.title ? "Current plan" : plan?.btn_title}
+          </Button>
+        </a>
       </div>
       <div className={styles.description}>
         <div>
