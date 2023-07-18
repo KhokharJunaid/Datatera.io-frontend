@@ -94,8 +94,6 @@ const Home = () => {
         try {
           api.post("/conversion/addData", values).then((res) => {
             getConversionData(true);
-            // handleValidatePlan();
-            // handleTotalUploads();
           });
         } catch (error) {
           console.log(error);
@@ -236,10 +234,19 @@ const Home = () => {
     }
     let res;
     try {
-      res = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/conversion/uploadFile`,
-        formData
-      );
+      await api
+        .post(
+          `${process.env.REACT_APP_BASE_URL}/conversion/uploadFile`,
+          formData
+        )
+        .then((resp) => {
+          res = resp;
+          handleValidatePlan();
+          handleTotalUploads();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (error) {
       if (error?.response?.data?.detail) {
         toast(`${error?.response?.data?.detail}`, { type: "error" });
