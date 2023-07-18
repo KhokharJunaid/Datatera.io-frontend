@@ -94,8 +94,8 @@ const Home = () => {
         try {
           api.post("/conversion/addData", values).then((res) => {
             getConversionData(true);
-            handleValidatePlan();
-            handleTotalUploads();
+            // handleValidatePlan();
+            // handleTotalUploads();
           });
         } catch (error) {
           console.log(error);
@@ -350,6 +350,7 @@ const Home = () => {
         handleGoogleShow();
       });
   };
+
   const unlinkGoogleSheet = (data2, sheetDetails) => {
     setSheetDetailsWrite(null);
     setSheetDetails(null);
