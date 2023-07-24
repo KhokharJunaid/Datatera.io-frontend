@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
-import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Form,
@@ -11,33 +11,37 @@ import {
   Table,
   Tabs,
   Tooltip,
-} from "react-bootstrap";
-import { AiOutlineMenu } from "react-icons/ai";
-import "react-modern-drawer/dist/index.css";
-import { toast } from "react-toastify";
-import * as XLSX from "xlsx";
-import api from "../../api";
-import deleteImg from "../../assets/images/delete.png";
-import file_image from "../../assets/images/file_image.png";
-import logo from "../../assets/images/logo.jpg";
-import Sidebar from "../../components/sidebar";
-import { ListContext } from "../../context/list";
-import GoogleSheetModal from "../../modals/GoogleSheetModal/GoogleSheetModal";
-import UploadModal from "../../modals/UploadFileModal/UploadModal.js";
-import UploadTextModal from "../../modals/UploadTextModal/UploadTextModal";
-import useWindowDimensions from "../../utiles/getWindowDimensions";
-import "./Home.css";
+} from 'react-bootstrap';
+import { AiOutlineMenu } from 'react-icons/ai';
+import 'react-modern-drawer/dist/index.css';
+import { toast } from 'react-toastify';
+import * as XLSX from 'xlsx';
+import api from '../../api';
+import deleteImg from '../../assets/images/delete.png';
+import file_image from '../../assets/images/file_image.png';
+import logo from '../../assets/images/logo.jpg';
+import Sidebar from '../../components/sidebar';
+import { ListContext } from '../../context/list';
+import GoogleSheetModal from '../../modals/GoogleSheetModal/GoogleSheetModal';
+import UploadModal from '../../modals/UploadFileModal/UploadModal.js';
+import UploadTextModal from '../../modals/UploadTextModal/UploadTextModal';
+import useWindowDimensions from '../../utiles/getWindowDimensions';
+import './Home.css';
+import { PlansContext } from '../../context/plans/plans';
 
 const Home = () => {
   const { list, openSideBar, setOpenSideBar } = useContext(ListContext);
+
+  const { userPlan, search, handleValidatePlan } = useContext(PlansContext);
+
   const { width } = useWindowDimensions();
-  const [step, setStep] = useState("step1");
+  const [step, setStep] = useState('step1');
   const [show, setShow] = useState(false);
   const [maxSizeErr, setMaxSizeErr] = useState(false);
   const [tableHeaders, setTableHeaders] = useState(null);
   const [tableData, setTableData] = useState(null);
   const [data, setData] = useState(null);
-  const [file, setfile] = useState("");
+  const [file, setfile] = useState('');
   const [convertedFile, setConvertedfile] = useState([]);
   const [loading, setLoading] = useState([]);
   const [appendedModal, setAppendedModal] = useState(false);
@@ -50,12 +54,12 @@ const Home = () => {
   const [updateSheetLoading, setUpdateSheetLoading] = useState(false);
   const [textCheckBox, setTextCheckBox] = useState(false);
 
-  const [search, setTotalSearches] = useState({
-    remainingUploads: null,
-    totalUploads: null,
-  });
+  // const [search, setTotalSearches] = useState({
+  //   remainingUploads: null,
+  //   totalUploads: null,
+  // });
 
-  const [loadingData, setLoadingData] = useState("");
+  const [loadingData, setLoadingData] = useState('');
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleGoogleShow = () => setGoogleSheetShow(!googleSheetShow);
@@ -72,16 +76,16 @@ const Home = () => {
 
     reader.onload = async (e) => {
       const bstr = e.target.result;
-      const workbook = XLSX.read(bstr, { type: "array", raw: true });
+      const workbook = XLSX.read(bstr, { type: 'array', raw: true });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
       let dupData1 = jsonData?.filter((el) => el?.length > 0);
       let dupData = JSON.parse(JSON.stringify(dupData1));
       if (dupData?.length > 0) {
-        let userId = JSON.parse(localStorage.getItem("user"))?._id;
+        let userId = JSON.parse(localStorage.getItem('user'))?._id;
         const head = JSON.parse(JSON.stringify(dupData[0]));
         setfile(selectedFile);
-        setStep("step2");
+        setStep('step2');
 
         let values = {
           user: userId,
@@ -89,10 +93,10 @@ const Home = () => {
           csvFileName: selectedFile?.name,
           csvFileSize: selectedFile?.size,
           conversion: list,
-          sheetDetailsWrite: { empty: "" },
+          sheetDetailsWrite: { empty: '' },
         };
         try {
-          api.post("/conversion/addData", values).then((res) => {
+          api.post('/conversion/addData', values).then((res) => {
             getConversionData(true);
           });
         } catch (error) {
@@ -125,18 +129,18 @@ const Home = () => {
           });
 
           setTableData(res?.data?.data[0]?.tableData);
-          setStep("step2");
+          setStep('step2');
         } else {
           setfile(null);
 
           setTableHeaders(null);
           setTableData(null);
-          setStep("step1");
+          setStep('step1');
         }
       } catch (error) {
         console.log(error);
       }
-      setLoadingData("");
+      setLoadingData('');
       setTextCheckBox(false);
       setUpdateSheetLoading(false);
     }
@@ -148,7 +152,7 @@ const Home = () => {
       setData(null);
       setConvertedfile(convertedFile?.filter((el) => el?.list !== list));
       handleClose();
-      setStep("step1");
+      setStep('step1');
     } catch (error) {
       console.log(error);
     }
@@ -157,8 +161,8 @@ const Home = () => {
   function downloadCSV() {
     const ws = XLSX.utils.json_to_sheet(data?.convertedData);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Converted-Data");
-    XLSX.writeFile(wb, "Data.xlsx");
+    XLSX.utils.book_append_sheet(wb, ws, 'Converted-Data');
+    XLSX.writeFile(wb, 'Data.xlsx');
   }
 
   function ExcelDateToJSDate(serial) {
@@ -183,7 +187,7 @@ const Home = () => {
       date_info.getDate(),
       hours,
       minutes,
-      seconds
+      seconds,
     );
     return `${finalDate.getDate()}-${finalDate.getMonth()}-${finalDate.getYear()}`;
   }
@@ -191,7 +195,7 @@ const Home = () => {
   const handleUploadFile = async (
     selectedFile,
     loadingTemp,
-    returnRowsLimit
+    returnRowsLimit,
   ) => {
     setLoadingData(loadingTemp);
     setLoading([...loading, list]);
@@ -204,81 +208,81 @@ const Home = () => {
       tableHeaders?.map((hd, i) => {
         obj[hd] = el[i];
       });
-      delete obj["Date/Time"];
-      delete obj["FileName"];
+      delete obj['Date/Time'];
+      delete obj['FileName'];
       finalTxtData.push(obj);
       obj = {};
     });
 
-    if ((process.env.LOGGING = "all")) {
-      console.log("Sample file to the API..", finalTxtData);
+    if ((process.env.LOGGING = 'all')) {
+      console.log('Sample file to the API..', finalTxtData);
     }
     const sample_file = new Blob([JSON.stringify(finalTxtData)], {
-      type: "text/plain",
+      type: 'text/plain',
     });
 
     let formData = new FormData();
-    formData.append("file", selectedFile);
-    formData.append("sample_file", sample_file);
+    formData.append('file', selectedFile);
+    formData.append('sample_file', sample_file);
     formData.append(
-      "processUrls",
-      `${textCheckBox || loadingTemp === "2" ? true : false}`
+      'processUrls',
+      `${textCheckBox || loadingTemp === '2' ? true : false}`,
     );
     formData.append(
-      "returnRowsLimit",
-      `${returnRowsLimit ? returnRowsLimit : null}`
+      'returnRowsLimit',
+      `${returnRowsLimit ? returnRowsLimit : null}`,
     );
 
-    if ((process.env.LOGGING = "all")) {
-      console.log("Data file to the API..", selectedFile.name);
+    if ((process.env.LOGGING = 'all')) {
+      console.log('Data file to the API..', selectedFile.name);
     }
     let res;
     try {
       await api
         .post(
           `${process.env.REACT_APP_BASE_URL}/conversion/uploadFile`,
-          formData
+          formData,
         )
         .then((resp) => {
           res = resp;
           handleValidatePlan();
-          handleTotalUploads();
+          // handleTotalUploads();
         })
         .catch((err) => {
           console.log(err);
         });
     } catch (error) {
       if (error?.response?.data?.detail) {
-        toast(`${error?.response?.data?.detail}`, { type: "error" });
+        toast(`${error?.response?.data?.detail}`, { type: 'error' });
       } else if (error?.message) {
-        toast(`${error?.message}`, { type: "error" });
+        toast(`${error?.message}`, { type: 'error' });
       }
 
       if (loading?.length > 0) {
         setLoading(loading?.filter((el) => el !== list));
       }
-      setLoadingData("");
+      setLoadingData('');
     }
-    if ((process.env.LOGGING = "all")) {
-      console.log("Response from API..", res);
+    if ((process.env.LOGGING = 'all')) {
+      console.log('Response from API..', res);
     }
 
     if (res) {
       try {
         if (res.data?.status_code) {
-          document.getElementById("upload_file_convert").value = "";
-          toast(`${res.data?.detail}`, { type: "error" });
+          document.getElementById('upload_file_convert').value = '';
+          toast(`${res.data?.detail}`, { type: 'error' });
           if (loading?.length > 0) {
             setLoading(loading?.filter((el) => el !== list));
           }
-          setLoadingData("");
+          setLoadingData('');
         } else if (res?.data?.length > 0) {
           let convertedData =
             data?.convertedData?.length > 0
               ? [...data?.convertedData, ...res.data]
               : res.data;
 
-          if ((process.env.LOGGING = "all")) {
+          if ((process.env.LOGGING = 'all')) {
             console.log(convertedData);
           }
 
@@ -292,16 +296,16 @@ const Home = () => {
           setUploadShow(false);
           setUploadTextShow(false);
           getConversionData();
-          document.getElementById("upload_file_convert").value = "";
+          document.getElementById('upload_file_convert').value = '';
           setAppendedModal(true);
           setLoading(loading?.filter((el) => el !== list));
         } else if (res?.data?.length === 0) {
-          toast(`No data returned after processing file`, { type: "error" });
-          setLoadingData("");
+          toast(`No data returned after processing file`, { type: 'error' });
+          setLoadingData('');
         }
       } catch (error) {
-        toast(error?.response?.data?.message, { type: "error" });
-        setLoadingData("");
+        toast(error?.response?.data?.message, { type: 'error' });
+        setLoadingData('');
       }
     }
   };
@@ -309,21 +313,21 @@ const Home = () => {
   const handleChangeUploadFile = async (e) => {
     let file = e.target.files[0];
     if (file?.size / 1024 / 1024 > 15) {
-      toast("Maximum file size should be of 15mb", { type: "error" });
+      toast('Maximum file size should be of 15mb', { type: 'error' });
     } else {
-      handleUploadFile(file, "0");
+      handleUploadFile(file, '0');
     }
   };
 
   const handleDeleteRow = async (row, index, type) => {
     try {
-      if (type === "csv") {
+      if (type === 'csv') {
         let d = JSON.parse(JSON.stringify(tableData));
         d?.splice(index, 1);
         let updatedData = data;
         updatedData.data[0].tableData = d;
-        if ((process.env.LOGGING = "all")) {
-          console.log("updatedData", updatedData);
+        if ((process.env.LOGGING = 'all')) {
+          console.log('updatedData', updatedData);
         }
 
         await api.patch(`/conversion/updateData/${data?._id}`, {
@@ -363,7 +367,7 @@ const Home = () => {
 
     api
       .patch(`/conversion/updateData/${data?._id}`, {
-        sheetDetailsWrite: { empty: "" },
+        sheetDetailsWrite: { empty: '' },
       })
       .then((res) => {
         getConversionData();
@@ -371,7 +375,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (data?.sheetDetailsWrite && data?.sheetDetailsWrite?.empty === "") {
+    if (data?.sheetDetailsWrite && data?.sheetDetailsWrite?.empty === '') {
       setSheetDetails(null);
     } else if (data?.sheetDetailsWrite) {
       setSheetDetails(data?.sheetDetailsWrite);
@@ -380,71 +384,84 @@ const Home = () => {
     }
   }, [data]);
 
-  const email = JSON.parse(localStorage.getItem("user"))?.email;
+  const email = JSON.parse(localStorage.getItem('user'))?.email;
 
   const handlePaste = () => {
     navigator.clipboard
       .readText()
       .then((clipboardText) => {
         if (clipboardText?.length > 0) {
-          const file = new File([clipboardText], "", {
-            type: "text/csv",
+          const file = new File([clipboardText], '', {
+            type: 'text/csv',
           });
           readFile(file);
         }
       })
       .catch((error) => {
-        console.log("Failed to read clipboard data:", error);
+        console.log('Failed to read clipboard data:', error);
       });
   };
 
-  const [userPlan, setUserPlan] = useState();
+  // const [userPlan, setUserPlan] = useState();
 
-  const getUserPlan = async () => {
-    await api.get(`/user/me`).then((res) => {
-      setUserPlan(res.data?.subscriptions);
-      handleTotalUploads();
-    });
-  };
+  // const handleTotalUploads = () => {
+  //   console.log('total uploads');
+  //   api
+  //     .get(`/user/total-uploads`)
+  //     .then((res) => {
+  //       console.log('handleTotalUploads success');
+  //       setTotalSearches(res?.data);
+  //     })
+  //     .catch((err) => {
+  //       // toast(err?.response?.data?.message, { type: "error" });
+  //     });
+  // };
 
-  const handleTotalUploads = async () => {
-    await api
-      .get(`/user/total-uploads`)
-      .then((res) => {
-        setTotalSearches(res?.data);
-      })
-      .catch((err) => {
-        // toast(err?.response?.data?.message, { type: "error" });
-      });
-  };
+  // const getUserPlan = () => {
+  //   api
+  //     .get(`/user/me`)
+  //     .then((res) => {
+  //       console.log('getUserPlan successfully called');
+  //       setUserPlan(res.data?.subscriptions);
+  //       handleTotalUploads();
+  //     })
+  //     .catch((err) => {
+  //       console.log('err in me ', err);
+  //     });
+  // };
 
-  const handleValidatePlan = async () => {
-    await api
-      .post("/user/validate-plan")
-      .then(() => {
-        getUserPlan();
-      })
-      .catch((err) => {
-        toast(err?.response?.data?.message, { type: "error" });
-      });
-  };
+  // const handleValidatePlan = () => {
+  //   api
+  //     .post('/user/validate-plan')
+  //     .then(() => {
+  //       console.log('validatePlanSuccess');
+  //       getUserPlan();
+  //     })
+  //     .catch((err) => {
+  //       toast(err?.response?.data?.message, { type: 'error' });
+  //     });
+  // };
 
-  useEffect(() => {
-    handleValidatePlan();
-  }, []);
+  // useEffect(() => {
+  //   handleValidatePlan();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (!search?.remainingUploads) {
+  //     console.log('called times');
+  //     handleValidatePlan();
+  //   }
+  // }, []);
 
   return (
     <>
       <div className="main">
         <div className="sidebar">
-          <Sidebar
-            userPlan={userPlan}
-            handleValidatePlan={handleValidatePlan}
-          />
+          <Sidebar />
         </div>
-        {list === "noPer" ? (
+        {list === 'noPer' ? (
           <div className="d-flex h-100 align-items-center justify-content-center">
-            <h2 style={{ marginLeft: width <= 605 ? "" : "300px" }}>
+            <h2 style={{ marginLeft: width <= 605 ? '' : '300px' }}>
               You do not have an access to this conversion or the conversion not
               exists
             </h2>
@@ -456,8 +473,8 @@ const Home = () => {
                 <u
                   className="me-3"
                   style={{
-                    fontSize: "18px",
-                    textAlign: "right",
+                    fontSize: '18px',
+                    textAlign: 'right',
                   }}
                 >
                   {email}
@@ -484,10 +501,10 @@ const Home = () => {
                       {userPlan?.length > 0 && (
                         <div
                           style={{
-                            fontSize: "18px",
-                            marginTop: "10px",
-                            marginLeft: "15px",
-                            fontWeight: "bold",
+                            fontSize: '18px',
+                            marginTop: '10px',
+                            marginLeft: '15px',
+                            fontWeight: 'bold',
                           }}
                         >
                           {search.remainingUploads !== null &&
@@ -499,7 +516,7 @@ const Home = () => {
                             )}
                         </div>
                       )}
-                      {step === "step1" && list ? (
+                      {step === 'step1' && list ? (
                         <>
                           <div className="Home_content_main">
                             <div className="home_content">
@@ -511,15 +528,15 @@ const Home = () => {
 
                               <div
                                 className={`upload_csv_file_main ${
-                                  maxSizeErr && "maxSizeError"
+                                  maxSizeErr && 'maxSizeError'
                                 }`}
                               >
                                 {search?.remainingUploads === 0 && (
                                   <div
                                     className={`upload_error ${
-                                      maxSizeErr && "labelError"
+                                      maxSizeErr && 'labelError'
                                     }`}
-                                    style={{ marginBottom: "10px" }}
+                                    style={{ marginBottom: '10px' }}
                                   >
                                     You have used your daily number of uploads.
                                   </div>
@@ -534,14 +551,14 @@ const Home = () => {
                                   accept=".csv"
                                 />
                                 <div
-                                  className={`${width > 912 ? "d-flex" : ""}`}
+                                  className={`${width > 912 ? 'd-flex' : ''}`}
                                 >
                                   <label
                                     for="upload_csv"
                                     className={
                                       search?.remainingUploads === 0
-                                        ? "upload_csv_btn m-1 disabled"
-                                        : "upload_csv_btn m-1"
+                                        ? 'upload_csv_btn m-1 disabled'
+                                        : 'upload_csv_btn m-1'
                                     }
                                   >
                                     Upload CSV files
@@ -555,28 +572,28 @@ const Home = () => {
                                     }
                                     variant="dark"
                                     style={{
-                                      width: "263px",
-                                      height: "48px",
-                                      borderRadius: "10px",
-                                      fontWeight: "600",
-                                      fontSize: "12px",
+                                      width: '263px',
+                                      height: '48px',
+                                      borderRadius: '10px',
+                                      fontWeight: '600',
+                                      fontSize: '12px',
                                     }}
                                     className="m-1 "
                                     onClick={handlePaste}
                                   >
-                                    {loading === "4" ? (
+                                    {loading === '4' ? (
                                       <Spinner
                                         animation="border"
                                         variant="secondary"
                                       />
                                     ) : (
-                                      "From clipboard"
+                                      'From clipboard'
                                     )}
                                   </Button>
                                 </div>
                                 <p
                                   className={`upload_error ${
-                                    maxSizeErr && "labelError"
+                                    maxSizeErr && 'labelError'
                                   }`}
                                 >
                                   Max file size - 5 mb.
@@ -585,7 +602,7 @@ const Home = () => {
                             </div>
                           </div>
                         </>
-                      ) : step === "step2" && list ? (
+                      ) : step === 'step2' && list ? (
                         <div className="Home_content_main">
                           <div className="home_content">
                             <h3 className="home_content_heading">Step 2</h3>
@@ -626,12 +643,12 @@ const Home = () => {
                                     <OverlayTrigger
                                       overlay={
                                         convertedFile?.find(
-                                          (el) => el?.list === list
+                                          (el) => el?.list === list,
                                         )?.name?.length > 0 ? (
                                           <Tooltip id="tooltip-disabled">
                                             {
                                               convertedFile?.find(
-                                                (el) => el?.list === list
+                                                (el) => el?.list === list,
                                               )?.name
                                             }
                                           </Tooltip>
@@ -642,20 +659,20 @@ const Home = () => {
                                     >
                                       <span className="file_size">
                                         {convertedFile?.find(
-                                          (el) => el?.list === list
+                                          (el) => el?.list === list,
                                         )
                                           ? convertedFile?.find(
-                                              (el) => el?.list === list
+                                              (el) => el?.list === list,
                                             )?.name?.length > 18
                                             ? `${convertedFile
                                                 ?.find(
-                                                  (el) => el?.list === list
+                                                  (el) => el?.list === list,
                                                 )
                                                 ?.name?.slice(0, 18)}...`
                                             : convertedFile?.find(
-                                                (el) => el?.list === list
+                                                (el) => el?.list === list,
                                               )?.name
-                                          : " Max file size - 1mb."}
+                                          : ' Max file size - 1mb.'}
                                       </span>
                                     </OverlayTrigger>
 
@@ -754,7 +771,7 @@ const Home = () => {
                                                 handleDeleteRow(
                                                   el,
                                                   index,
-                                                  "csv"
+                                                  'csv',
                                                 )
                                               }
                                               alt="delete"
@@ -766,10 +783,10 @@ const Home = () => {
                                     })}
                                     {data?.convertedData?.map((el, index) => {
                                       return (
-                                        <tr style={{ color: "#44444F" }}>
+                                        <tr style={{ color: '#44444F' }}>
                                           {Object.keys(el).map(function (
                                             detail,
-                                            id
+                                            id,
                                           ) {
                                             return <td>{el[detail]}</td>;
                                           })}

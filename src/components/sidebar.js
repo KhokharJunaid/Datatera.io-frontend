@@ -1,51 +1,59 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import plus_icon from "../assets/images/plus_icon.png";
-import Drawer from "react-modern-drawer";
-import Chat_icon from "../assets/images/Chat_icon.png";
-import close from "../assets/images/close.png";
-import logout_icon from "../assets/images/logout_icon.png";
-import upgrade_icon from "../assets/images/plus.png";
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
-import catchAsync from "../utiles/catchAsync";
-import { Formik } from "formik";
-import * as yup from "yup";
-import api from "../api/index";
-import { OverlayTrigger, Tooltip, Modal, Button, Form } from "react-bootstrap";
-import { toast } from "react-toastify";
-import { AuthContext } from "../context/auth";
-import { ListContext } from "../context/list";
-import useWindowDimensions from "../utiles/getWindowDimensions";
-import "./sideBar.css";
-import PricingModal from "./PricingModal";
-import { plans } from "../service/plan";
+import React, { useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import plus_icon from '../assets/images/plus_icon.png';
+import Drawer from 'react-modern-drawer';
+import Chat_icon from '../assets/images/Chat_icon.png';
+import close from '../assets/images/close.png';
+import logout_icon from '../assets/images/logout_icon.png';
+import upgrade_icon from '../assets/images/plus.png';
+import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
+import catchAsync from '../utiles/catchAsync';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import api from '../api/index';
+import { OverlayTrigger, Tooltip, Modal, Button, Form } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import { AuthContext } from '../context/auth';
+import { ListContext } from '../context/list';
+import useWindowDimensions from '../utiles/getWindowDimensions';
+import './sideBar.css';
+import PricingModal from './PricingModal';
+import { plans } from '../service/plan';
 
-const Sidebar = ({ userPlan, handleValidatePlan }) => {
+const Sidebar = () => {
+  const [userPlan, setUserPlan] = useState();
+
+  const getUserPlan = async () => {
+    await api.get(`/user/me`).then((res) => {
+      setUserPlan(res.data?.subscriptions);
+    });
+  };
+
   const { list, setListItems, openSideBar, setOpenSideBar } =
     useContext(ListContext);
   const { width } = useWindowDimensions();
   const navigate = useNavigate();
 
   const { isLogin, signOut } = useContext(AuthContext);
-  const [isOpen, setIsOpen] = React.useState(true);
+  const [isOpen, setIsOpen] = useState(true);
   const [updateConversion, setupdateConversion] = useState(null);
 
-  const [param, setParams] = React.useState(null);
-  const [firstCheckLocation, setFirstCheckLocation] = React.useState(true);
+  const [param, setParams] = useState(null);
+  const [firstCheckLocation, setFirstCheckLocation] = useState(true);
 
   const handleButtonClick = (_id) => {
     const queryParams = new URLSearchParams(window.location.search);
-    queryParams.delete("id");
-    queryParams.append("id", _id);
+    queryParams.delete('id');
+    queryParams.append('id', _id);
 
-    navigate("?" + queryParams.toString());
+    navigate('/?' + queryParams.toString());
   };
 
   const location = useLocation();
 
   const handleButtonClickget = () => {
     const searchParams = new URLSearchParams(location.search);
-    const paramValue = searchParams.get("id");
+    const paramValue = searchParams.get('id');
     setParams(paramValue);
   };
   const toggleDrawer = () => {
@@ -56,7 +64,7 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
   const [conversions, setConversions] = useState();
 
   const schema = yup.object().shape({
-    name: yup.string().required("Enter Conversion Name."),
+    name: yup.string().required('Enter Conversion Name.'),
   });
 
   const handleShow = () => setShow(true);
@@ -69,19 +77,19 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
 
   const handleSubmit = catchAsync(async (values, resetForm) => {
     if (updateConversion == null) {
-      let userId = JSON.parse(localStorage.getItem("user"))?._id;
+      let userId = JSON.parse(localStorage.getItem('user'))?._id;
       values.user = userId;
-      let res = await api.post("/conversion", values);
+      let res = await api.post('/conversion', values);
       setConversions([...conversions, res.data.createConversion]);
       setListItems(res.data.createConversion?._id);
       // handleButtonClick(res.data.createConversion?._id);
       setListItems(res.data.createConversion?._id);
 
       const queryParams = new URLSearchParams(window.location.search);
-      queryParams.delete("id");
-      queryParams.append("id", res.data.createConversion?._id);
+      queryParams.delete('id');
+      queryParams.append('id', res.data.createConversion?._id);
 
-      navigate("?" + queryParams.toString());
+      navigate('?' + queryParams.toString());
     } else {
       let res = await api.patch(`/conversion/${updateConversion._id}`, values);
       setConversions(
@@ -91,7 +99,7 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
           } else {
             return elem;
           }
-        })
+        }),
       );
     }
     setFirstCheckLocation(false);
@@ -114,7 +122,7 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
   };
 
   const getAllConversions = catchAsync(async () => {
-    let userId = JSON.parse(localStorage.getItem("user"))?._id;
+    let userId = JSON.parse(localStorage.getItem('user'))?._id;
     let res = await api.get(`/conversion/all-notes/${userId}`);
     setConversions(res.data.getAllConversion);
   });
@@ -122,7 +130,7 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
   useEffect(() => {
     handleButtonClickget();
     getAllConversions();
-    setListItems("");
+    setListItems('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -132,8 +140,8 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
 
       if (find) {
         setListItems(param);
-      } else if (find === undefined && param !== "") {
-        setListItems("noPer");
+      } else if (find === undefined && param !== '') {
+        setListItems('noPer');
       } else if (
         find === undefined &&
         param === null &&
@@ -157,9 +165,9 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
 
   const deleteConversions = catchAsync(async (id) => {
     await api.delete(`/conversion/${id}`);
-    let currCons = JSON.parse(localStorage.getItem("currentConverstion"));
+    let currCons = JSON.parse(localStorage.getItem('currentConverstion'));
     if (currCons === id) {
-      localStorage.removeItem("currentConverstion");
+      localStorage.removeItem('currentConverstion');
       setListItems(null);
     }
     const data = conversions.filter((elem) => {
@@ -168,8 +176,8 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
     setConversions(data);
     if (data?.length === 0) {
       const queryParams = new URLSearchParams(window.location.search);
-      queryParams.delete("id");
-      navigate("?" + queryParams.toString());
+      queryParams.delete('id');
+      navigate('?' + queryParams.toString());
     } else {
       handleButtonClick(conversions[0]._id);
       setListItems(conversions[0]._id);
@@ -179,7 +187,7 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
 
   const Logout = () => {
     signOut();
-    navigate("/signin");
+    navigate('/signin');
   };
 
   return (
@@ -212,7 +220,7 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
                 return (
                   <div
                     className={
-                      list === elem?._id ? "List selectedList" : "List"
+                      list === elem?._id ? 'List selectedList' : 'List'
                     }
                     id={`sidebar${index}`}
                     key={elem._id}
@@ -310,7 +318,6 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
                 {plans?.map((plan) => (
                   <PricingModal
                     setPriceModalShow={setPriceModalShow}
-                    handleValidatePlan={handleValidatePlan}
                     key={plan.id}
                     userPlan={userPlan}
                     plan={plan}
@@ -335,7 +342,7 @@ const Sidebar = ({ userPlan, handleValidatePlan }) => {
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title className="conversionTitle">
-            {updateConversion ? "Edit Conversion" : "Add Conversion"}
+            {updateConversion ? 'Edit Conversion' : 'Add Conversion'}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
