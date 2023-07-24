@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from 'react';
 
 const ListContext = React.createContext({});
 const ListConsumer = ListContext.Consumer;
@@ -8,12 +8,12 @@ const ListProvider = ({ children }) => {
   const [openSideBar, setOpenSideBar] = useState(false);
 
   const setListItems = (item) => {
-    localStorage.setItem("currentConverstion", JSON.stringify(item));
+    localStorage.setItem('currentConverstion', JSON.stringify(item));
     setList(item);
   };
 
   useEffect(() => {
-    let currCons = JSON.parse(localStorage.getItem("currentConverstion"));
+    let currCons = JSON.parse(localStorage.getItem('currentConverstion'));
     if (currCons) {
       setList(currCons);
     }

@@ -1,10 +1,13 @@
-import { AuthProvider } from "./auth";
-import { ListProvider } from "./list";
+import { AuthProvider } from './auth';
+import { ListProvider } from './list';
+import { PlanProvider } from './plans/plans';
 
 const ContextProvider = ({ children }) => {
   return (
     <AuthProvider>
-      <ListProvider>{children}</ListProvider>;
+      <PlanProvider>
+        <ListProvider>{children}</ListProvider>;
+      </PlanProvider>
     </AuthProvider>
   );
 };

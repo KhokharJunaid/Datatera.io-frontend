@@ -1,22 +1,24 @@
-import React, { useContext, useState } from "react";
-import { Box, TextField } from "@mui/material";
-import "./signin.css";
-import * as yup from "yup";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import { signInWithPopup } from "firebase/auth";
-import { toast } from "react-toastify";
-import api from "../../api/index";
-import googleLogo from "../../assets/images/googlelogo.png";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import logo from "../../assets/images/logo.jpg";
-import { auth, provider } from "../../config/firebaseConfig";
-import { AuthContext } from "../../context/auth";
-import { useFormik } from "formik";
-import Loader from "../../components/shared/loader/Loader";
+import React, { useContext, useState } from 'react';
+import { Box, TextField } from '@mui/material';
+import './signin.css';
+import * as yup from 'yup';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { signInWithPopup } from 'firebase/auth';
+import { toast } from 'react-toastify';
+import api from '../../api/index';
+import googleLogo from '../../assets/images/googlelogo.png';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import logo from '../../assets/images/logo.jpg';
+import { auth, provider } from '../../config/firebaseConfig';
+import { AuthContext } from '../../context/auth';
+import { useFormik } from 'formik';
+import Loader from '../../components/shared/loader/Loader';
+import { PlansContext } from '../../context/plans/plans';
 
 const Signin = () => {
   const { loginSuccess } = useContext(AuthContext);
+  const { handleValidatePlan } = useContext(PlansContext);
 
   const [showpassword, setShowpassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,26 +26,27 @@ const Signin = () => {
   const navigate = useNavigate();
 
   const initialValues = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   };
 
   const validationSchema = yup.object().shape({
-    email: yup.string().email("Invalid email format").required("."),
-    password: yup.string().required("."),
+    email: yup.string().email('Invalid email format').required('.'),
+    password: yup.string().required('.'),
   });
 
   const onSubmit = async (values, resetForm) => {
     try {
       setIsLoading(true);
-      const res = await api.post("/user/login", values);
+      const res = await api.post('/user/login', values);
       loginSuccess(res.data.token, res.data.data.user);
-      navigate("/");
+      handleValidatePlan();
+      navigate('/');
       resetForm();
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      toast(error?.response?.data?.message, { type: "error" });
+      toast(error?.response?.data?.message, { type: 'error' });
     }
   };
 
@@ -56,11 +59,11 @@ const Signin = () => {
         token: res?.user?.accessToken,
       };
       try {
-        let res = await api.post("/user/googleSignin", data);
+        let res = await api.post('/user/googleSignin', data);
         loginSuccess(res.data.token, res.data.data.user);
-        navigate("/");
+        navigate('/');
       } catch (error) {
-        toast("Some Error while logged in!", { type: "error" });
+        toast('Some Error while logged in!', { type: 'error' });
       }
     });
   };
@@ -89,20 +92,20 @@ const Signin = () => {
               name="email"
               disabled={isLoading}
               variant="outlined"
-              style={{ marginBottom: "1rem", width: "100%" }}
-              {...formik.getFieldProps("email")}
+              style={{ marginBottom: '1rem', width: '100%' }}
+              {...formik.getFieldProps('email')}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
             />
             <div className="eye_icon_main">
               <TextField
-                type={showpassword ? "text" : "password"}
+                type={showpassword ? 'text' : 'password'}
                 name="password"
                 label="Password"
                 disabled={isLoading}
                 variant="outlined"
-                style={{ width: "100%" }}
-                {...formik.getFieldProps("password")}
+                style={{ width: '100%' }}
+                {...formik.getFieldProps('password')}
                 error={
                   formik.touched.password && Boolean(formik.errors.password)
                 }
@@ -146,7 +149,7 @@ const Signin = () => {
                 className="signin_login_btn"
                 disabled={isLoading}
               >
-                {isLoading ? "Login..." : "Login"}
+                {isLoading ? 'Login...' : 'Login'}
               </Button>
             </div>
           </Box>

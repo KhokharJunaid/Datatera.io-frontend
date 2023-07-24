@@ -8,6 +8,7 @@ import EmailSend from "../pages/EmailSend/EmailSend";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import { ProtectedAuthRoute, ProtectedRoute } from "./protectedRoutes";
 import DoneSubscribe from "../pages/DoneSubcribe/DoneSubscribe";
+import Payment from "../pages/Payment/Payment"
 
 const AppRoutes = () => {
   return (
@@ -72,6 +73,15 @@ const AppRoutes = () => {
         element={
           <ProtectedAuthRoute>
             <Home />
+          </ProtectedAuthRoute>
+        }
+      />
+       <Route
+        exact
+        path="/payment/:plan"
+        element={
+          <ProtectedAuthRoute>
+            <Payment />
           </ProtectedAuthRoute>
         }
       />
