@@ -35,7 +35,7 @@ const PlanProvider = ({ children }) => {
     api
       .get(`/user/me`)
       .then((res) => {
-        setUserPlan(res.data?.subscriptions);
+        setUserPlan(res?.data?.subscriptions);
         handleTotalUploads();
       })
       .catch((err) => {
