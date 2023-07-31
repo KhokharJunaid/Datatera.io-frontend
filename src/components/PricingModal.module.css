@@ -8,14 +8,15 @@
 }
 
 .title {
-  display: flex;
+  /* display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: flex-start; */
   gap: 20px;
   font-size: 20px;
   line-height: 28px;
   font-weight: 600;
   margin-bottom: 10px;
+  position: relative
 }
 
 .p_color {
@@ -77,6 +78,52 @@
   border-radius: 10px;
   font-weight: 600;
   color: white !important;
+}
+
+.manage_subscription_btn {
+  font-size: 18px;
+  cursor: pointer !important;
+}
+
+.manage_subscription_btn:hover {
+  text-decoration: underline;
+}
+
+.yearly_btn {
+  font-size: 15px;
+  background: #4aa181;
+  color: white;
+  border-radius: 20px;
+  padding: 3px 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+}
+
+.yearly_btn_parent {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+  margin-top: -12px;
+  margin-bottom: 9px;
+}
+
+.preLoader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title_row {
+  display: flex;
+  gap: 10px;
+}
+
+.yearly_btn:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 885px) {
