@@ -1,14 +1,15 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import Signin from "../pages/Signin/signin";
-import Signup from "../pages/Signup/signup";
-import Home from "../pages/Home/Home";
-import EnterEmail from "../pages/EnterEmail/EnterEmail";
-import EmailSend from "../pages/EmailSend/EmailSend";
-import ResetPassword from "../pages/ResetPassword/ResetPassword";
-import { ProtectedAuthRoute, ProtectedRoute } from "./protectedRoutes";
-import DoneSubscribe from "../pages/DoneSubcribe/DoneSubscribe";
-import Payment from "../pages/Payment/Payment"
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Signin from '../pages/Signin/signin';
+import Signup from '../pages/Signup/signup';
+import Home from '../pages/Home/Home';
+import EnterEmail from '../pages/EnterEmail/EnterEmail';
+import EmailSend from '../pages/EmailSend/EmailSend';
+import ResetPassword from '../pages/ResetPassword/ResetPassword';
+import { ProtectedAuthRoute, ProtectedRoute } from './protectedRoutes';
+import DoneSubscribe from '../pages/DoneSubcribe/DoneSubscribe';
+import Payment from '../pages/Payment/Payment';
+import Cancel from '../pages/Cancel/Cancel';
 
 const AppRoutes = () => {
   return (
@@ -63,11 +64,20 @@ const AppRoutes = () => {
         path="/done-subscribe"
         element={
           <ProtectedAuthRoute>
-            <DoneSubscribe/>
+            <DoneSubscribe />
           </ProtectedAuthRoute>
         }
       />
-       <Route
+      <Route
+        exact
+        path="/cancel"
+        element={
+          <ProtectedAuthRoute>
+            <Cancel />
+          </ProtectedAuthRoute>
+        }
+      />
+      <Route
         exact
         path="/"
         element={
@@ -76,7 +86,7 @@ const AppRoutes = () => {
           </ProtectedAuthRoute>
         }
       />
-       <Route
+      <Route
         exact
         path="/payment/:plan"
         element={
